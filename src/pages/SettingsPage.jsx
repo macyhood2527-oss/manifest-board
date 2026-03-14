@@ -4,14 +4,24 @@ import { useBoards } from '../boards/useBoards'
 import { AppShell } from '../components/AppShell'
 import { PageHeader } from '../components/PageHeader'
 import { ThemeOption } from '../components/settings/ThemeOption'
+import { useAuth } from '../context/useAuth'
 import { useTheme } from '../context/useTheme'
 import { useToast } from '../toast/useToast'
 import { ui } from '../lib/ui'
 
 export function SettingsPage() {
+  const { user, updateProfile, updateEmail, updatePassword } = useAuth()
   const { currentTheme, themes, setTheme } = useTheme()
   const { boards, createBoard, updateBoard, deleteBoard, selectedBoardId, selectBoard } = useBoards()
   const toast = useToast()
+  const [profileName, setProfileName] = useState('')
+  const [profileEmail, setProfileEmail] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [accountErrorMessage, setAccountErrorMessage] = useState('')
+  const [isSavingProfile, setIsSavingProfile] = useState(false)
+  const [isSavingEmail, setIsSavingEmail] = useState(false)
+  const [isSavingPassword, setIsSavingPassword] = useState(false)
   const [boardName, setBoardName] = useState('')
   const [boardEmoji, setBoardEmoji] = useState('✨')
   const [boardDescription, setBoardDescription] = useState('')
@@ -55,6 +65,72 @@ export function SettingsPage() {
 
     return () => URL.revokeObjectURL(previewUrl)
   }, [editingBoardCoverFile])
+
+  useEffect(() => {
+    setProfileName(user?.name || '')
+    setProfileEmail(user?.email || '')
+  }, [user?.name, user?.email])
+
+  async function handleProfileSubmit(event) {
+    event.preventDefault()
+    setIsSavingProfile(true)
+    setAccountErrorMessage('')
+
+    try {
+      const updatedUser = await updateProfile({ name: profileName.trim() })
+      setProfileName(updatedUser?.name || '')
+      toast.success('Profile updated', 'Your display name now feels more like you.')
+    } catch (error) {
+      setAccountErrorMessage(error.message || 'Unable to update your profile right now.')
+    } finally {
+      setIsSavingProfile(false)
+    }
+  }
+
+  async function handleEmailSubmit(event) {
+    event.preventDefault()
+    setIsSavingEmail(true)
+    setAccountErrorMessage('')
+
+    try {
+      const normalizedEmail = profileEmail.trim()
+      const updatedUser = await updateEmail({ email: normalizedEmail })
+      setProfileEmail(updatedUser?.email || normalizedEmail)
+      toast.info('Email update started', 'Check your inbox for any confirmation emails needed to finish the change.')
+    } catch (error) {
+      setAccountErrorMessage(error.message || 'Unable to update your email right now.')
+    } finally {
+      setIsSavingEmail(false)
+    }
+  }
+
+  async function handlePasswordSubmit(event) {
+    event.preventDefault()
+    setAccountErrorMessage('')
+
+    if (newPassword.length < 6) {
+      setAccountErrorMessage('Use at least 6 characters for the new password.')
+      return
+    }
+
+    if (newPassword !== confirmPassword) {
+      setAccountErrorMessage('Your password confirmation does not match yet.')
+      return
+    }
+
+    setIsSavingPassword(true)
+
+    try {
+      await updatePassword({ password: newPassword })
+      setNewPassword('')
+      setConfirmPassword('')
+      toast.success('Password updated', 'Your account security has been refreshed.')
+    } catch (error) {
+      setAccountErrorMessage(error.message || 'Unable to update your password right now.')
+    } finally {
+      setIsSavingPassword(false)
+    }
+  }
 
   async function handleCreateBoard(event) {
     event.preventDefault()
@@ -193,6 +269,120 @@ export function SettingsPage() {
           title="Choose your board mood"
           description="Switch the app palette instantly. Your selected theme is saved automatically and stays active when you come back."
         />
+
+        <section className={`${ui.panelStrong} p-5 sm:p-7`}>
+          <div className="mb-5">
+            <h2 className="font-serif text-3xl text-[var(--color-heading)]">
+              Account
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
+              Update the name people see, keep your email current, and refresh your password whenever you need to.
+            </p>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-3">
+            <form
+              onSubmit={handleProfileSubmit}
+              className="space-y-4 rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-4"
+            >
+              <div>
+                <h3 className="font-serif text-2xl text-[var(--color-heading)]">Profile</h3>
+                <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
+                  Change the display name tied to your account.
+                </p>
+              </div>
+
+              <label className={`block space-y-2 ${ui.fieldLabel}`}>
+                <span>Name</span>
+                <input
+                  type="text"
+                  value={profileName}
+                  onChange={(event) => setProfileName(event.target.value)}
+                  placeholder="Your name"
+                  className={ui.fieldInput}
+                />
+              </label>
+
+              <button type="submit" disabled={isSavingProfile} className={ui.buttonPrimary}>
+                {isSavingProfile ? 'Saving...' : 'Save name'}
+              </button>
+            </form>
+
+            <form
+              onSubmit={handleEmailSubmit}
+              className="space-y-4 rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-4"
+            >
+              <div>
+                <h3 className="font-serif text-2xl text-[var(--color-heading)]">Email</h3>
+                <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
+                  Use an address you can access in case Supabase asks for confirmation.
+                </p>
+              </div>
+
+              <label className={`block space-y-2 ${ui.fieldLabel}`}>
+                <span>Email address</span>
+                <input
+                  required
+                  type="email"
+                  value={profileEmail}
+                  onChange={(event) => setProfileEmail(event.target.value)}
+                  placeholder="you@example.com"
+                  className={ui.fieldInput}
+                />
+              </label>
+
+              <button type="submit" disabled={isSavingEmail} className={ui.buttonPrimary}>
+                {isSavingEmail ? 'Saving...' : 'Update email'}
+              </button>
+            </form>
+
+            <form
+              onSubmit={handlePasswordSubmit}
+              className="space-y-4 rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-4"
+            >
+              <div>
+                <h3 className="font-serif text-2xl text-[var(--color-heading)]">Password</h3>
+                <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
+                  Choose a fresh password any time you want a quick security reset.
+                </p>
+              </div>
+
+              <label className={`block space-y-2 ${ui.fieldLabel}`}>
+                <span>New password</span>
+                <input
+                  required
+                  type="password"
+                  value={newPassword}
+                  onChange={(event) => setNewPassword(event.target.value)}
+                  placeholder="At least 6 characters"
+                  className={ui.fieldInput}
+                />
+              </label>
+
+              <label className={`block space-y-2 ${ui.fieldLabel}`}>
+                <span>Confirm password</span>
+                <input
+                  required
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(event) => setConfirmPassword(event.target.value)}
+                  placeholder="Retype your new password"
+                  className={ui.fieldInput}
+                />
+              </label>
+
+              <button type="submit" disabled={isSavingPassword} className={ui.buttonPrimary}>
+                {isSavingPassword ? 'Saving...' : 'Update password'}
+              </button>
+            </form>
+          </div>
+
+          {accountErrorMessage ? (
+            <div className={`${ui.errorPanel} mt-4`}>
+              {accountErrorMessage}
+            </div>
+          ) : null}
+        </section>
 
         <section className={`${ui.panelStrong} p-5 sm:p-7`}>
           <div className="mb-5">

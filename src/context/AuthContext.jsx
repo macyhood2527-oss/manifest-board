@@ -134,6 +134,70 @@ export function AuthProvider({ children }) {
     setUser(null)
   }, [])
 
+  const updateProfile = useCallback(async ({ name }) => {
+    if (!supabase) {
+      throw new Error('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your environment.')
+    }
+
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        data: {
+          name: name || '',
+        },
+      })
+
+      if (error) {
+        throw error
+      }
+
+      const nextUser = mapAuthUser(data.user)
+      setUser(nextUser)
+      return nextUser
+    } catch (error) {
+      throw new Error(getAuthErrorMessage(error, 'Unable to update your profile right now.'))
+    }
+  }, [])
+
+  const updateEmail = useCallback(async ({ email }) => {
+    if (!supabase) {
+      throw new Error('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your environment.')
+    }
+
+    try {
+      const { data, error } = await supabase.auth.updateUser({ email })
+
+      if (error) {
+        throw error
+      }
+
+      const nextUser = mapAuthUser(data.user)
+      setUser(nextUser)
+      return nextUser
+    } catch (error) {
+      throw new Error(getAuthErrorMessage(error, 'Unable to update your email right now.'))
+    }
+  }, [])
+
+  const updatePassword = useCallback(async ({ password }) => {
+    if (!supabase) {
+      throw new Error('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your environment.')
+    }
+
+    try {
+      const { data, error } = await supabase.auth.updateUser({ password })
+
+      if (error) {
+        throw error
+      }
+
+      const nextUser = mapAuthUser(data.user)
+      setUser(nextUser)
+      return nextUser
+    } catch (error) {
+      throw new Error(getAuthErrorMessage(error, 'Unable to update your password right now.'))
+    }
+  }, [])
+
   const value = useMemo(() => ({
     user,
     isAuthenticated: Boolean(user),
@@ -142,7 +206,10 @@ export function AuthProvider({ children }) {
     signup,
     logout,
     refreshAuth,
-  }), [user, isLoadingAuth, login, signup, logout, refreshAuth])
+    updateProfile,
+    updateEmail,
+    updatePassword,
+  }), [user, isLoadingAuth, login, signup, logout, refreshAuth, updateProfile, updateEmail, updatePassword])
 
   return (
     <AuthContext.Provider value={value}>

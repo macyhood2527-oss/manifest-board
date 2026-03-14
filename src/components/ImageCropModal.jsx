@@ -195,7 +195,7 @@ export function ImageCropModal({
   }
 
   return (
-    <div className="fixed inset-0 z-[90] flex items-center justify-center p-3 sm:p-5">
+    <div className="fixed inset-0 z-[90] overflow-y-auto overscroll-contain p-3 sm:flex sm:items-center sm:justify-center sm:p-5">
       <button
         type="button"
         className="absolute inset-0 bg-stone-950/30 backdrop-blur-[2px]"
@@ -203,35 +203,38 @@ export function ImageCropModal({
         aria-label="Close crop image dialog"
       />
 
-      <div className={`${ui.panelStrong} relative z-10 w-full max-w-3xl overflow-hidden px-5 py-5 sm:px-6`}>
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--color-text-soft)]">
-              Image crop
-            </p>
-            <h3 className="mt-1 font-serif text-3xl text-[var(--color-heading)]">
-              Frame your dream image
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
-              Adjust the crop so your card preview feels just right before saving it.
-            </p>
-          </div>
+      <div
+        className={`${ui.panelStrong} relative z-10 my-3 w-full max-w-3xl overflow-hidden max-h-[calc(100dvh-1.5rem)] overflow-y-auto sm:my-0 sm:max-h-[min(92vh,56rem)]`}
+      >
+        <div className="px-4 pb-5 pt-4 sm:px-6 sm:pt-5">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--color-text-soft)]">
+                Image crop
+              </p>
+              <h3 className="mt-1 font-serif text-3xl text-[var(--color-heading)]">
+                Frame your dream image
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
+                Adjust the crop so your card preview feels just right before saving it.
+              </p>
+            </div>
 
-          <button
-            type="button"
-            onClick={onCancel}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-soft)] text-[var(--color-text-soft)] transition hover:bg-[var(--color-surface-elevated)] hover:text-[var(--color-heading)]"
-            aria-label="Close crop modal"
-          >
-            <X className="h-4 w-4" strokeWidth={2} />
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={onCancel}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-soft)] text-[var(--color-text-soft)] transition hover:bg-[var(--color-surface-elevated)] hover:text-[var(--color-heading)]"
+              aria-label="Close crop modal"
+            >
+              <X className="h-4 w-4" strokeWidth={2} />
+            </button>
+          </div>
 
         <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
           <div className="flex items-center justify-center rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-4">
             <div
-              className={`relative overflow-hidden rounded-[1.35rem] border border-[var(--color-surface-elevated)] bg-[var(--color-surface-elevated)] shadow-paper touch-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-              style={{ width: PREVIEW_SIZE, height: PREVIEW_SIZE }}
+              className={`relative aspect-square w-full max-w-[280px] overflow-hidden rounded-[1.35rem] border border-[var(--color-surface-elevated)] bg-[var(--color-surface-elevated)] shadow-paper touch-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+              style={{ width: 'min(100%, 280px)' }}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
@@ -310,19 +313,27 @@ export function ImageCropModal({
           </div>
         </div>
 
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-border)] pt-4">
-          <div className="inline-flex items-center gap-2 text-sm text-[var(--color-text-soft)]">
-            <Crop className="h-4 w-4 text-[var(--color-primary)]" strokeWidth={1.9} />
-            Square crop works best with the polaroid card layout.
-          </div>
+          <div className="sticky bottom-0 -mx-4 mt-5 border-t border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 sm:static sm:mx-0 sm:bg-transparent sm:px-0 sm:pb-0 sm:pt-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+            <div className="inline-flex items-center gap-2 text-sm text-[var(--color-text-soft)]">
+              <Crop className="h-4 w-4 text-[var(--color-primary)]" strokeWidth={1.9} />
+              Square crop works best with the polaroid card layout.
+            </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <button type="button" onClick={onCancel} className={ui.buttonSecondary}>
-              Cancel
-            </button>
-            <button type="button" onClick={handleCrop} disabled={isCropping || !imageMeta} className={ui.buttonPrimary}>
-              {isCropping ? 'Cropping...' : !imageMeta ? 'Loading image...' : 'Use this crop'}
-            </button>
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <button type="button" onClick={onCancel} className={`${ui.buttonSecondary} w-full sm:w-auto`}>
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleCrop}
+                disabled={isCropping || !imageMeta}
+                className={`${ui.buttonPrimary} w-full sm:w-auto`}
+              >
+                {isCropping ? 'Cropping...' : !imageMeta ? 'Loading image...' : 'Use this crop'}
+              </button>
+            </div>
+          </div>
           </div>
         </div>
       </div>
