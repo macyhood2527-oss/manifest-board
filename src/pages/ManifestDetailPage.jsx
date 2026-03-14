@@ -80,7 +80,15 @@ export function ManifestDetailPage() {
       const updatedManifest = await markManifestAchieved(manifestId)
       setManifest(updatedManifest)
       toast.success('Dream achieved', `"${updatedManifest.title}" moved to your Achieved page.`)
-      navigate('/achieved')
+      navigate('/achieved', {
+        state: {
+          celebration: {
+            tone: 'achieved',
+            title: `"${updatedManifest.title}" became real.`,
+            description: 'This one belongs on your celebration wall now. Let yourself notice the progress you made.',
+          },
+        },
+      })
     } catch (error) {
       setErrorMessage(error.message || 'Unable to mark this manifest as achieved.')
     } finally {
@@ -174,14 +182,14 @@ export function ManifestDetailPage() {
                 submitLabel="Save changes"
               />
 
-              <div className="flex flex-wrap items-center gap-3">
-                <Link to="/" className={ui.buttonSecondary}>
+              <div className="sticky bottom-0 -mx-1 flex flex-col gap-3 border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_92%,white)] px-1 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-4 backdrop-blur-sm sm:static sm:mx-0 sm:flex-row sm:flex-wrap sm:border-t-0 sm:bg-transparent sm:px-0 sm:pb-0 sm:pt-0">
+                <Link to="/" className={`${ui.buttonSecondary} w-full sm:w-auto`}>
                   Back to {selectedBoard?.name || 'board'}
                 </Link>
                 <button
                   type="button"
                   onClick={handleDelete}
-                  className="inline-flex items-center rounded-full border border-[var(--color-danger)] bg-[var(--color-bg-soft)] px-5 py-3 text-sm font-semibold text-[var(--color-danger)]"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-[var(--color-danger)] bg-[var(--color-bg-soft)] px-5 py-3 text-sm font-semibold text-[var(--color-danger)] sm:w-auto"
                 >
                   Delete manifest
                 </button>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useBoards } from '../boards/useBoards'
 import { AppShell } from '../components/AppShell'
+import { CelebrationMoment } from '../components/CelebrationMoment'
 import { EmptyState } from '../components/EmptyState'
 import { ManifestCard } from '../components/ManifestCard'
 import { PageHeader } from '../components/PageHeader'
@@ -9,10 +10,30 @@ import { getAchievedManifests } from '../lib/manifests'
 import { ui } from '../lib/ui'
 
 export function AchievedPage() {
+  const location = useLocation()
+  const navigate = useNavigate()
   const { selectedBoard } = useBoards()
   const [manifests, setManifests] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
+  const [celebration, setCelebration] = useState(() => location.state?.celebration || null)
+
+  useEffect(() => {
+    const nextCelebration = location.state?.celebration
+
+    if (!nextCelebration) {
+      return undefined
+    }
+
+    setCelebration(nextCelebration)
+
+    const timeoutId = window.setTimeout(() => {
+      setCelebration(null)
+      navigate(location.pathname, { replace: true, state: {} })
+    }, 2800)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [location.pathname, location.state, navigate])
 
   useEffect(() => {
     let isMounted = true
@@ -63,6 +84,15 @@ export function AchievedPage() {
           <div className={`${ui.panelStrong} border-[var(--color-danger)] bg-paper-blush px-4 py-3 text-sm text-[var(--color-danger)]`}>
             {errorMessage}
           </div>
+        ) : null}
+
+        {celebration ? (
+          <CelebrationMoment
+            tone="achieved"
+            eyebrow="A real-life win"
+            title={celebration.title}
+            description={celebration.description}
+          />
         ) : null}
 
         {isLoading ? (

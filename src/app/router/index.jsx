@@ -1,12 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { ProtectedRoute, PublicOnlyRoute } from '../../components/AuthGate'
-import { AchievedPage } from '../../pages/AchievedPage'
-import { AddManifestPage } from '../../pages/AddManifestPage'
-import { BoardPage } from '../../pages/BoardPage'
-import { LoginPage } from '../../pages/LoginPage'
-import { ManifestDetailPage } from '../../pages/ManifestDetailPage'
-import { SettingsPage } from '../../pages/SettingsPage'
-import { SignupPage } from '../../pages/SignupPage'
 
 export const router = createBrowserRouter([
   {
@@ -14,11 +7,17 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/login',
-        element: <LoginPage />,
+        lazy: async () => {
+          const module = await import('../../pages/LoginPage')
+          return { Component: module.LoginPage }
+        },
       },
       {
         path: '/signup',
-        element: <SignupPage />,
+        lazy: async () => {
+          const module = await import('../../pages/SignupPage')
+          return { Component: module.SignupPage }
+        },
       },
     ],
   },
@@ -27,23 +26,38 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <BoardPage />,
+        lazy: async () => {
+          const module = await import('../../pages/BoardPage')
+          return { Component: module.BoardPage }
+        },
       },
       {
         path: '/manifests/new',
-        element: <AddManifestPage />,
+        lazy: async () => {
+          const module = await import('../../pages/AddManifestPage')
+          return { Component: module.AddManifestPage }
+        },
       },
       {
         path: '/manifests/:manifestId',
-        element: <ManifestDetailPage />,
+        lazy: async () => {
+          const module = await import('../../pages/ManifestDetailPage')
+          return { Component: module.ManifestDetailPage }
+        },
       },
       {
         path: '/achieved',
-        element: <AchievedPage />,
+        lazy: async () => {
+          const module = await import('../../pages/AchievedPage')
+          return { Component: module.AchievedPage }
+        },
       },
       {
         path: '/settings',
-        element: <SettingsPage />,
+        lazy: async () => {
+          const module = await import('../../pages/SettingsPage')
+          return { Component: module.SettingsPage }
+        },
       },
     ],
   },

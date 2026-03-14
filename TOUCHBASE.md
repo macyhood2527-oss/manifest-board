@@ -3,8 +3,8 @@
 ## Today
 
 - Date: `2026-03-14`
-- Latest commit: `893a067 - Migrate backend to Supabase`
-- Current status: `Working MVP`
+- Latest commit: `cc337b4 - Improve mobile crop modal and account settings`
+- Current status: `Expanded MVP with PWA, onboarding, celebrations, and optional AI helper`
 
 ## What We Completed Today
 
@@ -18,6 +18,17 @@
 - Cleaned up the repo by removing old PocketBase files
 - Added Vercel SPA rewrite support for direct routes like `/settings`
 - Improved sidebar spacing and overflow behavior
+- Fixed the mobile crop modal so the crop action is reachable on phones
+- Added account settings for name, email, and password updates
+- Rebranded browser/PWA metadata to `Manifestia`
+- Added PWA manifest, icon support, service worker registration, and install prompt handling
+- Synced browser/PWA `theme-color` to the selected theme
+- Added onboarding for first-time users with starter manifest ideas
+- Added celebration moments for new manifests and achieved manifests
+- Added route-level code-splitting to reduce the initial JS bundle
+- Added an AI manifest helper backed by OpenAI Responses API
+- Hid the AI helper UI behind a feature flag until billing is ready
+- Added a local Vite dev API path for `/api/manifest-assist` so AI can work without `vercel dev`
 
 ## Current App Features
 
@@ -31,6 +42,13 @@
 - Drag-and-drop manifest ordering
 - Image crop before upload
 - Mobile-friendly sidebar and layout
+- Mobile-friendly manifest form actions and detail actions
+- Installable PWA shell with local caching
+- Dynamic browser/PWA theme color
+- User account settings
+- First-run onboarding flow
+- Celebration banners for key milestones
+- Optional AI manifest drafting and rewrite helper
 
 ## Stack Used
 
@@ -59,6 +77,8 @@
 ```env
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
+OPENAI_API_KEY=
+VITE_ENABLE_AI_HELPER=false
 ```
 
 ## Important Project Files
@@ -68,19 +88,29 @@ VITE_SUPABASE_ANON_KEY=
 - `src/lib/manifests.js`
 - `src/context/AuthContext.jsx`
 - `src/components/AppShell.jsx`
+- `src/components/ImageCropModal.jsx`
+- `src/components/ManifestForm.jsx`
+- `src/components/CelebrationMoment.jsx`
 - `src/components/ManifestCard.jsx`
+- `src/lib/onboarding.js`
+- `src/lib/pwa.js`
+- `server/manifestAssist.js`
+- `api/manifest-assist.js`
 - `src/pages/BoardPage.jsx`
 - `src/pages/SettingsPage.jsx`
+- `public/manifest.webmanifest`
+- `public/sw.js`
 - `supabase/schema.sql`
 
 ## Notes / Follow-ups
 
-- Test the live Vercel deployment after the latest redeploy
-- Confirm direct links like `/settings` no longer return `404`
+- If AI is needed later, enable billing on OpenAI, set `OPENAI_API_KEY`, and flip `VITE_ENABLE_AI_HELPER=true`
+- Consider adding a proper route-level error boundary for friendlier crash screens
+- Consider more technical cleanup around the remaining shared `createLucideIcon` chunk
 - Optional next polish:
-  - more sidebar spacing refinement
   - production checklist
   - README/screenshots for portfolio use
+  - push latest local changes if they are not on GitHub yet
 
 ## Daily Update Template
 

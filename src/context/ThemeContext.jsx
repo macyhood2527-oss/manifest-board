@@ -8,12 +8,33 @@ import {
 } from '../lib/themes'
 import { ThemeContext } from './themeContextObject'
 
+function setThemeColorMeta(content) {
+  if (typeof document === 'undefined' || !content) {
+    return
+  }
+
+  let themeMeta = document.querySelector('meta[name="theme-color"]')
+
+  if (!themeMeta) {
+    themeMeta = document.createElement('meta')
+    themeMeta.setAttribute('name', 'theme-color')
+    document.head.appendChild(themeMeta)
+  }
+
+  themeMeta.setAttribute('content', content)
+}
+
 function applyTheme(themeId) {
   if (typeof document === 'undefined') {
     return
   }
 
-  document.documentElement.setAttribute('data-theme', isThemeId(themeId) ? themeId : defaultThemeId)
+  const nextThemeId = isThemeId(themeId) ? themeId : defaultThemeId
+  const nextTheme = getThemeById(nextThemeId)
+  document.documentElement.setAttribute('data-theme', nextThemeId)
+  document.documentElement.style.setProperty('--app-theme-color', nextTheme.colors.background)
+  document.body.style.backgroundColor = nextTheme.colors.background
+  setThemeColorMeta(nextTheme.colors.background)
 }
 
 function getInitialThemeId() {

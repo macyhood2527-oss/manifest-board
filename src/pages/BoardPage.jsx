@@ -3,12 +3,15 @@ import { ChevronDown, CloudMoon, Search, SunMedium, X } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useBoards } from '../boards/useBoards'
 import { AppShell } from '../components/AppShell'
+import { CelebrationMoment } from '../components/CelebrationMoment'
 import { EmptyState } from '../components/EmptyState'
 import { ManifestCard } from '../components/ManifestCard'
 import { PageHeader } from '../components/PageHeader'
+import { useAuth } from '../context/useAuth'
 import { orderManifests, persistManifestOrder, reorderManifestList } from '../lib/manifestOrder'
 import { getActiveManifests, saveManifestOrder } from '../lib/manifests'
 import { mockManifests } from '../lib/mockManifests'
+import { dismissOnboarding, isOnboardingDismissed, STARTER_MANIFESTS } from '../lib/onboarding'
 import { ui } from '../lib/ui'
 import { useToast } from '../toast/useToast'
 
@@ -49,8 +52,11 @@ export function BoardPage() {
   const [isBrowseCollapsed, setIsBrowseCollapsed] = useState(true)
   const [draggedManifestId, setDraggedManifestId] = useState('')
   const [newlyAddedManifestId, setNewlyAddedManifestId] = useState('')
+  const [celebration, setCelebration] = useState(() => location.state?.celebration || null)
   const [isUsingRemoteData, setIsUsingRemoteData] = useState(false)
+  const [isOnboardingVisible, setIsOnboardingVisible] = useState(() => !isOnboardingDismissed())
   const { selectedBoard } = useBoards()
+  const { user } = useAuth()
   const toast = useToast()
   const greeting = getBoardGreeting()
 
@@ -94,20 +100,34 @@ export function BoardPage() {
 
   useEffect(() => {
     const nextManifestId = location.state?.newManifestId
+    const nextCelebration = location.state?.celebration
 
-    if (!nextManifestId) {
+    if (!nextManifestId && !nextCelebration) {
       return undefined
     }
 
-    setNewlyAddedManifestId(nextManifestId)
+    if (nextManifestId) {
+      setNewlyAddedManifestId(nextManifestId)
+    }
+
+    if (nextCelebration) {
+      setCelebration(nextCelebration)
+    }
 
     const timeoutId = window.setTimeout(() => {
       setNewlyAddedManifestId('')
+      setCelebration(null)
       navigate(location.pathname, { replace: true, state: {} })
     }, 2200)
 
     return () => window.clearTimeout(timeoutId)
   }, [location.pathname, location.state, navigate])
+
+  useEffect(() => {
+    if (manifests.length > 0) {
+      setIsOnboardingVisible(false)
+    }
+  }, [manifests.length])
 
   const categoryOptions = [
     'all',
@@ -162,6 +182,13 @@ export function BoardPage() {
   function handleDragEnd() {
     setDraggedManifestId('')
   }
+
+  function handleDismissOnboarding() {
+    dismissOnboarding()
+    setIsOnboardingVisible(false)
+  }
+
+  const shouldShowOnboarding = !isLoading && manifests.length === 0 && isOnboardingVisible
 
   return (
     <AppShell>
@@ -305,6 +332,85 @@ export function BoardPage() {
               />
             ))}
           </div>
+        ) : null}
+
+        {celebration ? (
+          <CelebrationMoment
+            tone={celebration.tone}
+            title={celebration.title}
+            description={celebration.description}
+            eyebrow="Fresh energy on the board"
+          />
+        ) : null}
+
+        {shouldShowOnboarding ? (
+          <section className={`${ui.panelStrong} relative overflow-hidden px-4 py-5 sm:px-5 sm:py-6`}>
+            <div className="absolute inset-x-5 top-0 h-24 rounded-b-[2rem] bg-[color-mix(in_srgb,var(--color-primary)_12%,white)] blur-3xl" />
+            <div className="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--color-text-soft)]">
+                  First gentle steps
+                </p>
+                <h2 className="mt-2 font-serif text-3xl text-[var(--color-heading)]">
+                  {user?.name ? `${user.name}, let’s make this board feel alive.` : 'Let’s make this board feel alive.'}
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
+                  Start with one dream card, then shape the mood around it. You do not need a perfect plan. One image and a few honest notes are enough to begin.
+                </p>
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-bg-soft)] px-4 py-3">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-text-soft)]">1</p>
+                    <p className="mt-2 text-sm font-medium text-[var(--color-heading)]">Choose one dream</p>
+                    <p className="mt-1 text-sm leading-6 text-[var(--color-text-soft)]">Pick the vision you want to keep close first.</p>
+                  </div>
+                  <div className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-bg-soft)] px-4 py-3">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-text-soft)]">2</p>
+                    <p className="mt-2 text-sm font-medium text-[var(--color-heading)]">Add a photo</p>
+                    <p className="mt-1 text-sm leading-6 text-[var(--color-text-soft)]">An image makes the board feel immediate and real.</p>
+                  </div>
+                  <div className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-bg-soft)] px-4 py-3">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-text-soft)]">3</p>
+                    <p className="mt-2 text-sm font-medium text-[var(--color-heading)]">Write the feeling</p>
+                    <p className="mt-1 text-sm leading-6 text-[var(--color-text-soft)]">Describe the future moment you want to grow into.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative w-full max-w-md rounded-[1.6rem] border border-[var(--color-border)] bg-[var(--color-paper-strong)] p-4 shadow-paper">
+                <p className="text-sm font-semibold text-[var(--color-heading)]">Try a starter idea</p>
+                <p className="mt-1 text-sm leading-6 text-[var(--color-text-soft)]">
+                  Pick one of these and we’ll prefill your first manifest so the blank page feels easier.
+                </p>
+                <div className="mt-4 flex flex-col gap-2">
+                  {STARTER_MANIFESTS.map((starter) => (
+                    <Link
+                      key={starter.title}
+                      to={`/manifests/new?title=${encodeURIComponent(starter.title)}&category=${encodeURIComponent(starter.category)}&notes=${encodeURIComponent(starter.notes)}`}
+                      className={`${ui.buttonSecondary} w-full justify-start px-4 text-left`}
+                    >
+                      {starter.title}
+                    </Link>
+                  ))}
+                </div>
+                <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+                  <Link to="/manifests/new" className={`${ui.buttonPrimary} w-full sm:w-auto`}>
+                    Start from scratch
+                  </Link>
+                  <Link to="/settings" className={`${ui.buttonSecondary} w-full sm:w-auto`}>
+                    Personalize board
+                  </Link>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleDismissOnboarding}
+                  className="mt-3 text-xs font-medium text-[var(--color-text-soft)] underline-offset-4 transition hover:text-[var(--color-heading)] hover:underline"
+                >
+                  Hide this for now
+                </button>
+              </div>
+            </div>
+          </section>
         ) : null}
 
         {!isLoading && manifests.length === 0 ? (

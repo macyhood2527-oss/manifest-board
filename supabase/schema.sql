@@ -28,6 +28,13 @@ create table if not exists public.manifests (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.ai_usage_events (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  mode text not null check (mode in ('generate', 'rewrite')),
+  created_at timestamptz not null default now()
+);
+
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -52,6 +59,7 @@ execute function public.set_updated_at();
 
 alter table public.boards enable row level security;
 alter table public.manifests enable row level security;
+alter table public.ai_usage_events enable row level security;
 
 drop policy if exists "Users can read their own boards" on public.boards;
 create policy "Users can read their own boards"
@@ -94,6 +102,16 @@ drop policy if exists "Users can delete their own manifests" on public.manifests
 create policy "Users can delete their own manifests"
 on public.manifests for delete
 using (auth.uid() = user_id);
+
+drop policy if exists "Users can read their own ai usage events" on public.ai_usage_events;
+create policy "Users can read their own ai usage events"
+on public.ai_usage_events for select
+using (auth.uid() = user_id);
+
+drop policy if exists "Users can create their own ai usage events" on public.ai_usage_events;
+create policy "Users can create their own ai usage events"
+on public.ai_usage_events for insert
+with check (auth.uid() = user_id);
 
 insert into storage.buckets (id, name, public)
 values

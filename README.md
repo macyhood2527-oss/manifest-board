@@ -31,7 +31,14 @@ Create a `.env` file in the project root:
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
+OPENAI_API_KEY=your-openai-api-key-here
+VITE_ENABLE_AI_HELPER=false
+AI_DAILY_LIMIT=3
+AI_MONTHLY_LIMIT=30
 ```
+
+For the AI manifest helper, keep `OPENAI_API_KEY` server-side only. Do not expose it through `VITE_` variables.
+Set `VITE_ENABLE_AI_HELPER=true` only when you want the AI UI visible.
 
 ## Supabase Setup
 
@@ -62,6 +69,8 @@ Start the app:
 ```bash
 npm run dev
 ```
+
+The AI helper works in local Vite dev too, as long as `OPENAI_API_KEY` is available in your local environment before you start `npm run dev`.
 
 Build for production:
 

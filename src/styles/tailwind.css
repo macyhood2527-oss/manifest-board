@@ -735,6 +735,11 @@ button,
   right: 0.75rem;
 }
 
+.inset-x-5{
+  left: 1.25rem;
+  right: 1.25rem;
+}
+
 .inset-y-0{
   top: 0px;
   bottom: 0px;
@@ -781,6 +786,34 @@ button,
   left: -8rem;
 }
 
+.left-\[10\%\]{
+  left: 10%;
+}
+
+.left-\[18\%\]{
+  left: 18%;
+}
+
+.left-\[28\%\]{
+  left: 28%;
+}
+
+.left-\[48\%\]{
+  left: 48%;
+}
+
+.left-\[58\%\]{
+  left: 58%;
+}
+
+.left-\[68\%\]{
+  left: 68%;
+}
+
+.left-\[86\%\]{
+  left: 86%;
+}
+
 .left-\[calc\(100\%\+0\.75rem\)\]{
   left: calc(100% + 0.75rem);
 }
@@ -801,12 +834,36 @@ button,
   top: 50%;
 }
 
+.top-10{
+  top: 2.5rem;
+}
+
+.top-12{
+  top: 3rem;
+}
+
+.top-2{
+  top: 0.5rem;
+}
+
 .top-20{
   top: 5rem;
 }
 
+.top-24{
+  top: 6rem;
+}
+
 .top-3{
   top: 0.75rem;
+}
+
+.top-4{
+  top: 1rem;
+}
+
+.top-5{
+  top: 1.25rem;
 }
 
 .top-\[-4rem\]{
@@ -999,6 +1056,10 @@ button,
   height: 5rem;
 }
 
+.h-24{
+  height: 6rem;
+}
+
 .h-3{
   height: 0.75rem;
 }
@@ -1115,6 +1176,10 @@ button,
   width: 4rem;
 }
 
+.w-3{
+  width: 0.75rem;
+}
+
 .w-3\.5{
   width: 0.875rem;
 }
@@ -1171,8 +1236,8 @@ button,
   width: 4.5rem;
 }
 
-.w-\[min\(84vw\2c 20rem\)\]{
-  width: min(84vw,20rem);
+.w-\[min\(88vw\2c 20rem\)\]{
+  width: min(88vw,20rem);
 }
 
 .w-full{
@@ -1187,12 +1252,20 @@ button,
   min-width: 1.75rem;
 }
 
+.max-w-2xl{
+  max-width: 42rem;
+}
+
 .max-w-3xl{
   max-width: 48rem;
 }
 
 .max-w-5xl{
   max-width: 64rem;
+}
+
+.max-w-\[20rem\]{
+  max-width: 20rem;
 }
 
 .max-w-\[280px\]{
@@ -1221,6 +1294,10 @@ button,
 
 .shrink-0{
   flex-shrink: 0;
+}
+
+.grow{
+  flex-grow: 1;
 }
 
 .-translate-x-1\/2{
@@ -1484,6 +1561,10 @@ button,
   border-radius: 1.75rem;
 }
 
+.rounded-\[1\.8rem\]{
+  border-radius: 1.8rem;
+}
+
 .rounded-\[1rem\]{
   border-radius: 1rem;
 }
@@ -1502,6 +1583,11 @@ button,
 
 .rounded-xl{
   border-radius: 0.75rem;
+}
+
+.rounded-b-\[2rem\]{
+  border-bottom-right-radius: 2rem;
+  border-bottom-left-radius: 2rem;
 }
 
 .rounded-l-none{
@@ -1573,6 +1659,14 @@ button,
   border-color: rgb(0 0 0 / 0.05);
 }
 
+.bg-\[color-mix\(in_srgb\2c var\(--color-accent\)_18\%\2c white\)\]{
+  background-color: color-mix(in srgb,var(--color-accent) 18%,white);
+}
+
+.bg-\[color-mix\(in_srgb\2c var\(--color-accent\)_20\%\2c white\)\]{
+  background-color: color-mix(in srgb,var(--color-accent) 20%,white);
+}
+
 .bg-\[color-mix\(in_srgb\2c var\(--color-danger\)_14\%\2c white\)\]{
   background-color: color-mix(in srgb,var(--color-danger) 14%,white);
 }
@@ -1609,6 +1703,10 @@ button,
   background-color: color-mix(in srgb,var(--color-primary) 14%,white);
 }
 
+.bg-\[color-mix\(in_srgb\2c var\(--color-primary\)_22\%\2c white\)\]{
+  background-color: color-mix(in srgb,var(--color-primary) 22%,white);
+}
+
 .bg-\[color-mix\(in_srgb\2c var\(--color-primary\)_9\%\2c white\)\]{
   background-color: color-mix(in srgb,var(--color-primary) 9%,white);
 }
@@ -1627,6 +1725,10 @@ button,
 
 .bg-\[color-mix\(in_srgb\2c var\(--color-surface-soft\)_88\%\2c white\)\]{
   background-color: color-mix(in srgb,var(--color-surface-soft) 88%,white);
+}
+
+.bg-\[color-mix\(in_srgb\2c var\(--color-surface-soft\)_92\%\2c white\)\]{
+  background-color: color-mix(in srgb,var(--color-surface-soft) 92%,white);
 }
 
 .bg-\[var\(--badge-bg\)\]{
@@ -1879,11 +1981,6 @@ button,
   padding-bottom: 1.25rem;
 }
 
-.py-6{
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-
 .py-8{
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -1898,16 +1995,20 @@ button,
   padding-bottom: 0.25rem;
 }
 
-.pb-2{
-  padding-bottom: 0.5rem;
-}
-
 .pb-4{
   padding-bottom: 1rem;
 }
 
 .pb-5{
   padding-bottom: 1.25rem;
+}
+
+.pb-\[calc\(0\.5rem\+env\(safe-area-inset-bottom\)\)\]{
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+.pb-\[calc\(1\.25rem\+env\(safe-area-inset-bottom\)\)\]{
+  padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
 }
 
 .pb-\[calc\(1rem\+env\(safe-area-inset-bottom\)\)\]{
@@ -2099,8 +2200,16 @@ button,
   letter-spacing: 0.16em;
 }
 
+.tracking-\[0\.18em\]{
+  letter-spacing: 0.18em;
+}
+
 .tracking-\[0\.22em\]{
   letter-spacing: 0.22em;
+}
+
+.tracking-\[0\.24em\]{
+  letter-spacing: 0.24em;
 }
 
 .tracking-\[0\.28em\]{
@@ -2153,6 +2262,10 @@ button,
 
 .text-current{
   color: currentColor;
+}
+
+.underline-offset-4{
+  text-underline-offset: 4px;
 }
 
 .accent-\[var\(--color-primary\)\]{
@@ -2301,6 +2414,14 @@ button,
   transform-origin: center;
 }
 
+.celebration-enter {
+  animation: celebration-enter 560ms cubic-bezier(0.18, 0.9, 0.2, 1);
+}
+
+.celebration-confetti {
+  animation: celebration-confetti 1800ms ease-out forwards;
+}
+
 .bg-app-canvas {
   background:
       linear-gradient(color-mix(in srgb, white 38%, transparent), color-mix(in srgb, white 38%, transparent)),
@@ -2402,6 +2523,39 @@ button,
   }
 }
 
+@keyframes celebration-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes celebration-confetti {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.8);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(42px) scale(1.05);
+  }
+}
+
 .placeholder\:text-\[var\(--color-text-soft\)\]::-moz-placeholder{
   color: var(--color-text-soft);
 }
@@ -2466,6 +2620,10 @@ button,
 
 .hover\:text-\[var\(--color-primary-hover\)\]:hover{
   color: var(--color-primary-hover);
+}
+
+.hover\:underline:hover{
+  text-decoration-line: underline;
 }
 
 .focus\:border-\[var\(--color-primary\)\]:focus{
@@ -2655,6 +2813,10 @@ button,
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .sm\:grid-cols-3{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .sm\:grid-cols-\[12rem_1fr\]{
     grid-template-columns: 12rem 1fr;
   }
@@ -2705,6 +2867,10 @@ button,
 
   .sm\:overflow-visible{
     overflow: visible;
+  }
+
+  .sm\:border-t-0{
+    border-top-width: 0px;
   }
 
   .sm\:bg-transparent{
@@ -2775,6 +2941,10 @@ button,
     padding-bottom: 0.25rem;
   }
 
+  .sm\:pt-0{
+    padding-top: 0px;
+  }
+
   .sm\:pt-4{
     padding-top: 1rem;
   }
@@ -2794,6 +2964,10 @@ button,
 
   .sm\:text-\[15px\]{
     font-size: 15px;
+  }
+
+  .sm\:text-\[2rem\]{
+    font-size: 2rem;
   }
 
   .sm\:text-sm{
