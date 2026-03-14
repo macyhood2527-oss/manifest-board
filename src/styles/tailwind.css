@@ -581,8 +581,8 @@ video {
   --color-border-strong: color-mix(in srgb, var(--color-text) 24%, var(--color-surface));
   --color-badge-bg: color-mix(in srgb, var(--color-primary) 12%, white);
   --color-badge-text: color-mix(in srgb, var(--color-primary) 72%, var(--color-text));
-  --color-tape: color-mix(in srgb, var(--color-primary) 12%, white);
-  --color-pin: color-mix(in srgb, var(--color-accent) 55%, var(--color-primary));
+  --color-tape: color-mix(in srgb, var(--color-primary) 24%, white);
+  --color-pin: color-mix(in srgb, var(--color-accent) 68%, var(--color-primary));
   --color-danger: color-mix(in srgb, #c05b5b 72%, var(--color-text));
   --color-danger-soft: color-mix(in srgb, var(--color-danger) 12%, white);
   --color-success: color-mix(in srgb, var(--color-accent) 74%, var(--color-text));
@@ -753,6 +753,10 @@ button,
 .inset-y-\[-8\%\]{
   top: -8%;
   bottom: -8%;
+}
+
+.-top-1{
+  top: -0.25rem;
 }
 
 .bottom-0{
@@ -1272,8 +1276,12 @@ button,
   width: 3.75rem;
 }
 
-.w-\[4\.5rem\]{
-  width: 4.5rem;
+.w-\[4\.35rem\]{
+  width: 4.35rem;
+}
+
+.w-\[4\.85rem\]{
+  width: 4.85rem;
 }
 
 .w-\[4\.8rem\]{
@@ -1282,6 +1290,10 @@ button,
 
 .w-\[46\%\]{
   width: 46%;
+}
+
+.w-\[5\.15rem\]{
+  width: 5.15rem;
 }
 
 .w-\[min\(88vw\2c 20rem\)\]{
@@ -1587,12 +1599,12 @@ button,
   border-radius: 0.22rem;
 }
 
-.rounded-\[0\.25rem\]{
-  border-radius: 0.25rem;
+.rounded-\[0\.24rem\]{
+  border-radius: 0.24rem;
 }
 
-.rounded-\[0\.2rem\]{
-  border-radius: 0.2rem;
+.rounded-\[0\.25rem\]{
+  border-radius: 0.25rem;
 }
 
 .rounded-\[0\.35rem\]{
@@ -1687,6 +1699,10 @@ button,
 
 .border{
   border-width: 1px;
+}
+
+.border-\[1\.5px\]{
+  border-width: 1.5px;
 }
 
 .border-l-0{

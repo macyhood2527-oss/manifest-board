@@ -23,11 +23,11 @@ export function AchievedMemoryCard({ manifest }) {
         className="relative block pt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
       >
         <div
-          className="absolute left-1/2 top-0 z-20 h-5 w-[4.8rem] -translate-x-1/2 rounded-[0.22rem] border shadow-sm"
+          className="absolute left-1/2 top-0 z-20 h-6 w-[5.15rem] -translate-x-1/2 rounded-[0.24rem] border shadow-sm"
           aria-hidden="true"
           style={{
-            backgroundColor: 'color-mix(in srgb, var(--color-accent) 16%, white)',
-            borderColor: 'color-mix(in srgb, var(--color-paper-border) 52%, transparent)',
+            backgroundColor: 'color-mix(in srgb, var(--color-accent) 26%, white)',
+            borderColor: 'color-mix(in srgb, var(--color-accent) 22%, var(--color-paper-border))',
             transform: 'translateX(-50%) rotate(-1.8deg)',
           }}
         />

@@ -67,11 +67,11 @@ export function ManifestCard({
       >
         {decorationVariant === 'tape-center' ? (
           <div
-            className={`absolute left-1/2 top-0 z-20 h-5 w-16 -translate-x-1/2 rounded-[0.2rem] border shadow-sm ${isNewlyAdded ? 'manifest-card-enter-tape' : ''}`}
+            className={`absolute left-1/2 top-0 z-20 h-6 w-[4.35rem] -translate-x-1/2 rounded-[0.24rem] border shadow-sm ${isNewlyAdded ? 'manifest-card-enter-tape' : ''}`}
             aria-hidden="true"
             style={{
               backgroundColor: 'var(--color-tape)',
-              borderColor: 'color-mix(in srgb, var(--color-paper-border) 52%, transparent)',
+              borderColor: 'color-mix(in srgb, var(--color-primary) 24%, var(--color-paper-border))',
               transform: 'translateX(-50%) rotate(-1.8deg)',
             }}
           />
@@ -79,11 +79,11 @@ export function ManifestCard({
 
         {decorationVariant === 'tape-tilt' ? (
           <div
-            className={`absolute left-1/2 top-0 z-20 h-5 w-[4.5rem] -translate-x-1/2 rounded-[0.2rem] border shadow-sm ${isNewlyAdded ? 'manifest-card-enter-tape' : ''}`}
+            className={`absolute left-1/2 top-0 z-20 h-6 w-[4.85rem] -translate-x-1/2 rounded-[0.24rem] border shadow-sm ${isNewlyAdded ? 'manifest-card-enter-tape' : ''}`}
             aria-hidden="true"
             style={{
               backgroundColor: 'var(--color-tape)',
-              borderColor: 'color-mix(in srgb, var(--color-paper-border) 52%, transparent)',
+              borderColor: 'color-mix(in srgb, var(--color-primary) 24%, var(--color-paper-border))',
               transform: 'translateX(-50%) rotate(3.5deg)',
             }}
           />
@@ -91,22 +91,22 @@ export function ManifestCard({
 
         {decorationVariant === 'pin-center' ? (
           <div
-            className={`absolute left-1/2 top-0 z-20 h-4 w-4 -translate-x-1/2 rounded-full border shadow-sm ${isNewlyAdded ? 'manifest-card-enter-pin' : ''}`}
+            className={`absolute left-1/2 -top-1 z-20 h-5 w-5 -translate-x-1/2 rounded-full border-[1.5px] shadow-sm ${isNewlyAdded ? 'manifest-card-enter-pin' : ''}`}
             aria-hidden="true"
             style={{
               backgroundColor: pinColor,
-              borderColor: 'color-mix(in srgb, var(--color-paper-strong) 72%, transparent)',
+              borderColor: 'color-mix(in srgb, var(--color-heading) 28%, var(--color-paper-strong))',
             }}
           />
         ) : null}
 
         {decorationVariant === 'pin-left' ? (
           <div
-            className={`absolute left-7 top-0 z-20 h-4 w-4 rounded-full border shadow-sm ${isNewlyAdded ? 'manifest-card-enter-pin' : ''}`}
+            className={`absolute left-7 -top-1 z-20 h-5 w-5 rounded-full border-[1.5px] shadow-sm ${isNewlyAdded ? 'manifest-card-enter-pin' : ''}`}
             aria-hidden="true"
             style={{
               backgroundColor: pinColor,
-              borderColor: 'color-mix(in srgb, var(--color-paper-strong) 72%, transparent)',
+              borderColor: 'color-mix(in srgb, var(--color-heading) 28%, var(--color-paper-strong))',
             }}
           />
         ) : null}
