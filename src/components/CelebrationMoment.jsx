@@ -33,6 +33,8 @@ export function CelebrationMoment({
 
   return (
     <section className={`celebration-enter relative overflow-hidden rounded-[1.8rem] border border-[var(--color-border)] ${style.panel} px-4 py-5 shadow-paper sm:px-5`}>
+      <span className="celebration-tape pointer-events-none absolute left-1/2 top-0 z-10 h-5 w-24 -translate-x-1/2 rounded-[0.3rem] border border-white/50 bg-[color-mix(in_srgb,var(--color-paper-strong)_72%,transparent)] shadow-sm" />
+      <div className="celebration-shimmer pointer-events-none absolute inset-y-[-8%] left-[-34%] w-[46%] -rotate-12 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.16)_24%,rgba(255,255,255,0.76)_50%,rgba(255,255,255,0.2)_74%,transparent_100%)]" />
       <div className="pointer-events-none absolute inset-0">
         {CONFETTI_POSITIONS.map((position, index) => (
           <span

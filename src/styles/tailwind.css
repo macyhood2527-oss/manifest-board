@@ -750,6 +750,11 @@ button,
   bottom: 0.75rem;
 }
 
+.inset-y-\[-8\%\]{
+  top: -8%;
+  bottom: -8%;
+}
+
 .bottom-0{
   bottom: 0px;
 }
@@ -780,6 +785,10 @@ button,
 
 .left-7{
   left: 1.75rem;
+}
+
+.left-\[-34\%\]{
+  left: -34%;
 }
 
 .left-\[-8rem\]{
@@ -1176,6 +1185,10 @@ button,
   width: 4rem;
 }
 
+.w-24{
+  width: 6rem;
+}
+
 .w-3{
   width: 0.75rem;
 }
@@ -1234,6 +1247,10 @@ button,
 
 .w-\[4\.5rem\]{
   width: 4.5rem;
+}
+
+.w-\[46\%\]{
+  width: 46%;
 }
 
 .w-\[min\(88vw\2c 20rem\)\]{
@@ -1307,6 +1324,11 @@ button,
 
 .-translate-y-1\/2{
   --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-rotate-12{
+  --tw-rotate: -12deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1517,6 +1539,10 @@ button,
   border-radius: 0.2rem;
 }
 
+.rounded-\[0\.3rem\]{
+  border-radius: 0.3rem;
+}
+
 .rounded-\[0\.85rem\]{
   border-radius: 0.85rem;
 }
@@ -1659,6 +1685,10 @@ button,
   border-color: rgb(0 0 0 / 0.05);
 }
 
+.border-white\/50{
+  border-color: rgb(255 255 255 / 0.5);
+}
+
 .bg-\[color-mix\(in_srgb\2c var\(--color-accent\)_18\%\2c white\)\]{
   background-color: color-mix(in srgb,var(--color-accent) 18%,white);
 }
@@ -1689,6 +1719,10 @@ button,
 
 .bg-\[color-mix\(in_srgb\2c var\(--color-paper\)_92\%\2c white\)\]{
   background-color: color-mix(in srgb,var(--color-paper) 92%,white);
+}
+
+.bg-\[color-mix\(in_srgb\2c var\(--color-paper-strong\)_72\%\2c transparent\)\]{
+  background-color: color-mix(in srgb,var(--color-paper-strong) 72%,transparent);
 }
 
 .bg-\[color-mix\(in_srgb\2c var\(--color-primary\)_10\%\2c white\)\]{
@@ -1817,6 +1851,10 @@ button,
 
 .bg-white\/75{
   background-color: rgb(255 255 255 / 0.75);
+}
+
+.bg-\[linear-gradient\(90deg\2c transparent_0\%\2c rgba\(255\2c 255\2c 255\2c 0\.16\)_24\%\2c rgba\(255\2c 255\2c 255\2c 0\.76\)_50\%\2c rgba\(255\2c 255\2c 255\2c 0\.2\)_74\%\2c transparent_100\%\)\]{
+  background-image: linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.16) 24%,rgba(255,255,255,0.76) 50%,rgba(255,255,255,0.2) 74%,transparent 100%);
 }
 
 .bg-gradient-to-r{
@@ -2415,11 +2453,21 @@ button,
 }
 
 .celebration-enter {
-  animation: celebration-enter 560ms cubic-bezier(0.18, 0.9, 0.2, 1);
+  animation: celebration-enter 860ms cubic-bezier(0.18, 0.9, 0.2, 1);
+  transform-origin: center top;
+}
+
+.celebration-tape {
+  animation: celebration-tape-settle 900ms cubic-bezier(0.2, 0.85, 0.22, 1);
+  transform-origin: center;
 }
 
 .celebration-confetti {
   animation: celebration-confetti 1800ms ease-out forwards;
+}
+
+.celebration-shimmer {
+  animation: celebration-shimmer 2100ms cubic-bezier(0.2, 0.8, 0.22, 1) 180ms both;
 }
 
 .bg-app-canvas {
@@ -2526,17 +2574,22 @@ button,
 @keyframes celebration-enter {
   0% {
     opacity: 0;
-    transform: translateY(18px) scale(0.985);
+    transform: translateY(22px) scale(0.96) rotate(-4.6deg);
   }
 
-  60% {
+  34% {
     opacity: 1;
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-7px) scale(1.02) rotate(2.9deg);
+  }
+
+  62% {
+    opacity: 1;
+    transform: translateY(1px) scale(1.005) rotate(-1.3deg);
   }
 
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(1) rotate(-0.45deg);
   }
 }
 
@@ -2553,6 +2606,43 @@ button,
   100% {
     opacity: 0;
     transform: translateY(42px) scale(1.05);
+  }
+}
+
+@keyframes celebration-tape-settle {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px) rotate(-8deg) scale(0.92);
+  }
+
+  56% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(3px) rotate(3deg) scale(1.02);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes celebration-shimmer {
+  0% {
+    opacity: 0;
+    transform: translateX(-12%) rotate(-12deg) scaleX(0.92);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  58% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(318%) rotate(-12deg) scaleX(1.08);
   }
 }
 
