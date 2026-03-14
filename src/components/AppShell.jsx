@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
-  Quote,
+  NotebookText,
   ChevronLeft,
   CircleCheckBig,
   LayoutGrid,
@@ -25,7 +25,7 @@ const navigationGroups = [
     items: [
       { to: '/', label: 'Board', end: true, icon: LayoutGrid },
       { to: '/achieved', label: 'Achieved', icon: CircleCheckBig },
-      { to: '/quotes', label: 'Quotes', icon: Quote },
+      { to: '/quotes', label: 'Quotes', icon: NotebookText },
     ],
   },
   {

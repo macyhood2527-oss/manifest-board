@@ -104,7 +104,7 @@ export function BoardPage() {
 
         setManifests(records)
         setIsUsingRemoteData(true)
-        setSourceLabel('Synced with Supabase')
+        setSourceLabel('Everything is up to date')
       } catch {
         if (!isMounted) {
           return
