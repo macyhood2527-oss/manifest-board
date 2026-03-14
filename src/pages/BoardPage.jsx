@@ -21,7 +21,6 @@ const STATUS_SECTIONS = [
     key: 'dreaming',
     title: 'Dreaming',
     description: 'Soft wishes, future visions, and the life scenes you want to keep close.',
-    accentClass: 'from-[color-mix(in_srgb,var(--color-primary)_18%,white)] to-transparent',
     titleColor: 'color-mix(in srgb, var(--color-primary) 66%, var(--color-heading))',
     subtitleColor: 'color-mix(in srgb, var(--color-primary) 34%, var(--color-text-soft))',
     dividerColor: 'color-mix(in srgb, var(--color-primary) 34%, var(--color-border-strong))',
@@ -30,7 +29,6 @@ const STATUS_SECTIONS = [
     key: 'planning',
     title: 'Planning',
     description: 'Cards that already feel active, practical, and ready for your next steps.',
-    accentClass: 'from-[color-mix(in_srgb,var(--color-accent)_24%,white)] to-transparent',
     titleColor: 'color-mix(in srgb, var(--color-accent) 60%, var(--color-heading))',
     subtitleColor: 'color-mix(in srgb, var(--color-accent) 30%, var(--color-text-soft))',
     dividerColor: 'color-mix(in srgb, var(--color-accent) 32%, var(--color-border-strong))',
@@ -39,7 +37,6 @@ const STATUS_SECTIONS = [
     key: 'inspiration',
     title: 'Inspiration',
     description: 'Mood pieces, references, and sparks you want around while the vision grows.',
-    accentClass: 'from-[color-mix(in_srgb,var(--color-heading)_10%,white)] to-transparent',
     titleColor: 'color-mix(in srgb, var(--color-heading) 88%, var(--color-primary))',
     subtitleColor: 'color-mix(in srgb, var(--color-heading) 36%, var(--color-text-soft))',
     dividerColor: 'color-mix(in srgb, var(--color-heading) 20%, var(--color-border-strong))',
@@ -485,7 +482,6 @@ export function BoardPage() {
             {groupedManifests.map((section) => (
               <section key={section.key} className={ui.sectionBoard}>
                 <div className="relative overflow-hidden pb-4">
-                  <div className={`pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b ${section.accentClass}`} />
                   <div className="relative">
                     <h2 className="font-serif text-2xl text-[var(--color-heading)]">
                       <span style={{ color: section.titleColor }}>

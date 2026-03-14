@@ -2025,32 +2025,14 @@ button,
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.from-\[color-mix\(in_srgb\2c var\(--color-accent\)_24\%\2c white\)\]{
-  --tw-gradient-from: color-mix(in srgb,var(--color-accent) 24%,white) var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
 .from-\[color-mix\(in_srgb\2c var\(--color-bg\)_64\%\2c transparent\)\]{
   --tw-gradient-from: color-mix(in srgb,var(--color-bg) 64%,transparent) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.from-\[color-mix\(in_srgb\2c var\(--color-heading\)_10\%\2c white\)\]{
-  --tw-gradient-from: color-mix(in srgb,var(--color-heading) 10%,white) var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
 .from-\[color-mix\(in_srgb\2c var\(--color-primary\)_14\%\2c white\)\]{
   --tw-gradient-from: color-mix(in srgb,var(--color-primary) 14%,white) var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
-.from-\[color-mix\(in_srgb\2c var\(--color-primary\)_18\%\2c white\)\]{
-  --tw-gradient-from: color-mix(in srgb,var(--color-primary) 18%,white) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
