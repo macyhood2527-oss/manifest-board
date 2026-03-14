@@ -316,7 +316,7 @@ function DesktopSidebar({ isCollapsed, setIsCollapsed, onMobileClose }) {
           >
             <div className={['flex min-h-0 flex-1 flex-col', isCollapsed ? 'w-full items-center overflow-y-auto' : 'overflow-y-auto pr-1'].join(' ')}>
               <SidebarBoardCover isCollapsed={isCollapsed} />
-              <div className={isCollapsed ? 'w-full' : 'mt-4'}>
+              <div className={isCollapsed ? 'mt-5 w-full' : 'mt-4'}>
                 <SidebarNav isCollapsed={isCollapsed} />
               </div>
             </div>
