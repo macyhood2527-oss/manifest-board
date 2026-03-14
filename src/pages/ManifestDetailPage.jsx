@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { ImageOff } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useBoards } from '../boards/useBoards'
 import { AppShell } from '../components/AppShell'
@@ -143,11 +144,25 @@ export function ManifestDetailPage() {
         {!isLoading && manifest ? (
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
             <div className={`${ui.panelStrong} overflow-hidden p-4`}>
-              <img
-                src={manifest.imageUrl || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80'}
-                alt={manifest.title}
-                className="h-full max-h-[520px] w-full rounded-[1.5rem] object-cover"
-              />
+              {manifest.imageUrl ? (
+                <img
+                  src={manifest.imageUrl}
+                  alt={manifest.title}
+                  className="h-full max-h-[520px] w-full rounded-[1.5rem] object-cover"
+                />
+              ) : (
+                <div className="flex min-h-[24rem] w-full flex-col items-center justify-center rounded-[1.5rem] bg-[color-mix(in_srgb,var(--color-paper)_92%,white)] px-6 text-center">
+                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--color-primary)_12%,white)] text-[var(--color-primary)]">
+                    <ImageOff className="h-6 w-6" strokeWidth={1.9} />
+                  </span>
+                  <h3 className="mt-4 font-serif text-2xl text-[var(--color-heading)]">
+                    No image added yet
+                  </h3>
+                  <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--color-text-soft)]">
+                    You can keep this dream card simple for now, or upload an image later when the right inspiration comes to you.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="space-y-6">

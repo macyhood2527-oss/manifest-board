@@ -1,16 +1,102 @@
-# React + Vite
+# Manifest Board
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Manifest Board is a cozy React + Vite web app for saving dreams, goals, inspirations, and future plans as visual cards. It uses Supabase for authentication, database storage, and image uploads.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- Vite
+- Tailwind CSS
+- React Router
+- Supabase Auth
+- Supabase Postgres
+- Supabase Storage
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Email/password signup and login
+- Multiple boards
+- Theme switching
+- Polaroid-style manifest cards
+- Board cover images
+- Image upload and crop for manifests
+- Achieved page for completed dreams
+- Drag and reorder cards
+- Mobile-friendly sidebar layout
 
-## Expanding the ESLint configuration
+## Environment
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Create a `.env` file in the project root:
+
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+```
+
+## Supabase Setup
+
+1. Create a Supabase project.
+2. Disable email confirmation if you want easier MVP testing.
+3. Open the SQL Editor.
+4. Run `supabase/schema.sql`.
+
+That SQL file creates:
+
+- `boards` table
+- `manifests` table
+- update timestamp triggers
+- row level security policies
+- `manifest-images` storage bucket
+- `board-covers` storage bucket
+
+## Run Locally
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the app:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Lint:
+
+```bash
+npm run lint
+```
+
+## Project Structure
+
+```text
+src/
+  app/router
+  boards
+  components
+  context
+  lib
+  pages
+  styles
+supabase/
+  schema.sql
+```
+
+## Notes
+
+- Manifest images are optional.
+- Board cover images are optional.
+- Themes are saved locally in the browser.
+- Selected board and sidebar state are also persisted locally.
+
+## Built By
+
+Melissa Marcelo

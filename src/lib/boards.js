@@ -1,16 +1,17 @@
-import { getAuthUserId, getFileUrl, pb } from './pocketbase'
+import {
+  deleteFile,
+  getAuthUserId,
+  getStoragePublicUrl,
+  supabase,
+  uploadFile,
+} from './supabase'
 
-const COLLECTION_NAME = 'boards'
-const MANIFESTS_COLLECTION = 'manifests'
+const TABLE_NAME = 'boards'
+const MANIFESTS_TABLE = 'manifests'
+const BOARD_COVERS_BUCKET = 'board-covers'
 
-function ensurePocketBase() {
-  if (!pb) {
-    throw new Error('PocketBase is not configured. Add VITE_POCKETBASE_URL to your environment.')
-  }
-}
-
-function ensureAuthenticatedUser() {
-  const userId = getAuthUserId()
+async function ensureAuthenticatedUser() {
+  const userId = await getAuthUserId()
 
   if (!userId) {
     throw new Error('Sign in to access your boards.')
@@ -19,93 +20,165 @@ function ensureAuthenticatedUser() {
   return userId
 }
 
+function ensureConfigured() {
+  if (!supabase) {
+    throw new Error('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your environment.')
+  }
+}
+
 function mapBoard(record) {
   return {
     id: record.id,
     name: record.name,
     emoji: record.emoji ?? '',
-    owner: Array.isArray(record.owner) ? record.owner[0] ?? '' : record.owner ?? '',
+    owner: record.user_id ?? '',
     description: record.description ?? '',
-    coverImage: record.coverImage ?? '',
-    coverImageUrl: getFileUrl(record, record.coverImage),
+    coverImage: record.cover_image_path ?? '',
+    coverImageUrl: getStoragePublicUrl(BOARD_COVERS_BUCKET, record.cover_image_path),
     theme: record.theme ?? '',
-    sortOrder: Number(record.sortOrder ?? 0),
-    created: record.created,
-    updated: record.updated,
+    sortOrder: Number(record.sort_order ?? 0),
+    created: record.created_at,
+    updated: record.updated_at,
   }
 }
 
-function buildBoardPayload(values) {
-  const userId = ensureAuthenticatedUser()
+async function buildBoardPayload(values, currentCoverImagePath = '') {
+  const userId = await ensureAuthenticatedUser()
   const payload = {
     name: values.name,
     emoji: values.emoji || '',
-    owner: values.owner || userId,
+    user_id: values.owner || userId,
     description: values.description || '',
     theme: values.theme || '',
-    sortOrder: Number(values.sortOrder ?? Date.now()),
+    sort_order: Number(values.sortOrder ?? Date.now()),
   }
 
   if (values.coverImage instanceof File) {
-    payload.coverImage = values.coverImage
+    if (currentCoverImagePath) {
+      await deleteFile(BOARD_COVERS_BUCKET, currentCoverImagePath)
+    }
+
+    payload.cover_image_path = await uploadFile({
+      bucket: BOARD_COVERS_BUCKET,
+      file: values.coverImage,
+      userId,
+      folder: 'boards',
+    })
+  } else if (currentCoverImagePath) {
+    payload.cover_image_path = currentCoverImagePath
   }
 
   if (values.removeCoverImage) {
-    payload.coverImage = null
+    await deleteFile(BOARD_COVERS_BUCKET, currentCoverImagePath)
+    payload.cover_image_path = null
   }
 
   return payload
 }
 
 export async function getBoards() {
-  ensurePocketBase()
-  const userId = ensureAuthenticatedUser()
-  const records = await pb.collection(COLLECTION_NAME).getFullList({
-    filter: `owner = "${userId}"`,
-    sort: '-sortOrder,-created',
-  })
+  ensureConfigured()
+  const userId = await ensureAuthenticatedUser()
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .select('*')
+    .eq('user_id', userId)
+    .order('sort_order', { ascending: false })
+    .order('created_at', { ascending: false })
 
-  return records.map(mapBoard)
+  if (error) {
+    throw error
+  }
+
+  return (data ?? []).map(mapBoard)
 }
 
 export async function createBoard(values) {
-  ensurePocketBase()
-  const record = await pb.collection(COLLECTION_NAME).create(buildBoardPayload(values))
-  return mapBoard(record)
+  ensureConfigured()
+  const payload = await buildBoardPayload(values)
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .insert(payload)
+    .select('*')
+    .single()
+
+  if (error) {
+    throw error
+  }
+
+  return mapBoard(data)
 }
 
 export async function updateBoard(id, values) {
-  ensurePocketBase()
-  const record = await pb.collection(COLLECTION_NAME).update(id, buildBoardPayload(values))
-  return mapBoard(record)
+  ensureConfigured()
+  const { data: currentBoard, error: fetchError } = await supabase
+    .from(TABLE_NAME)
+    .select('cover_image_path')
+    .eq('id', id)
+    .single()
+
+  if (fetchError) {
+    throw fetchError
+  }
+
+  const payload = await buildBoardPayload(values, currentBoard?.cover_image_path ?? '')
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .update(payload)
+    .eq('id', id)
+    .select('*')
+    .single()
+
+  if (error) {
+    throw error
+  }
+
+  return mapBoard(data)
 }
 
 export async function deleteBoard(id, fallbackBoardId) {
-  ensurePocketBase()
+  ensureConfigured()
 
   if (!fallbackBoardId || fallbackBoardId === id) {
     throw new Error('Choose another board to move manifests into before deleting this one.')
   }
 
-  const manifests = await pb.collection(MANIFESTS_COLLECTION).getFullList({
-    filter: `board = "${id}"`,
-    sort: '-sortOrder,-created',
-  })
+  const { data: boardToDelete, error: boardError } = await supabase
+    .from(TABLE_NAME)
+    .select('cover_image_path')
+    .eq('id', id)
+    .single()
 
-  if (manifests.length > 0) {
-    await Promise.all(
-      manifests.map((manifest) => pb.collection(MANIFESTS_COLLECTION).update(manifest.id, {
-        board: fallbackBoardId,
-      })),
-    )
+  if (boardError) {
+    throw boardError
   }
 
-  await pb.collection(COLLECTION_NAME).delete(id)
+  const { error: moveError } = await supabase
+    .from(MANIFESTS_TABLE)
+    .update({ board_id: fallbackBoardId })
+    .eq('board_id', id)
+
+  if (moveError) {
+    throw moveError
+  }
+
+  if (boardToDelete?.cover_image_path) {
+    await deleteFile(BOARD_COVERS_BUCKET, boardToDelete.cover_image_path)
+  }
+
+  const { error } = await supabase
+    .from(TABLE_NAME)
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    throw error
+  }
 }
 
 export async function ensureDefaultBoard() {
-  ensurePocketBase()
-  const userId = ensureAuthenticatedUser()
+  ensureConfigured()
+  const userId = await ensureAuthenticatedUser()
 
   const boards = await getBoards()
 

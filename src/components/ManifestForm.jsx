@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Crop, ImagePlus } from 'lucide-react'
 import { useBoards } from '../boards/useBoards'
 import { ImageCropModal } from './ImageCropModal'
 import { ui } from '../lib/ui'
@@ -211,29 +210,12 @@ export function ManifestForm({
               </label>
             </div>
             {previewUrl ? (
-              <div className="space-y-3 p-3 pt-0">
+              <div className="p-3 pt-0">
                 <img
                   src={previewUrl}
                   alt="Manifest preview"
                   className="h-44 w-full rounded-[1.25rem] object-cover sm:h-48"
                 />
-                <div className="flex flex-wrap gap-2">
-                  <label className={`${ui.buttonSecondary} cursor-pointer px-4 py-2 text-[13px]`}>
-                    <ImagePlus className="mr-2 h-4 w-4" strokeWidth={1.9} />
-                    Replace image
-                    <input
-                      type="file"
-                      name="image"
-                      accept="image/*"
-                      onChange={handleChange}
-                      className="sr-only"
-                    />
-                  </label>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-3 py-2 text-xs text-[var(--color-text-soft)]">
-                    <Crop className="h-3.5 w-3.5 text-[var(--color-primary)]" strokeWidth={1.9} />
-                    Cropped for a cleaner card layout
-                  </span>
-                </div>
               </div>
             ) : (
               <div className="px-4 pb-4 text-xs text-[var(--color-text-soft)]">

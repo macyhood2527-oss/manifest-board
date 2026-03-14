@@ -847,8 +847,8 @@ button,
   margin-right: auto;
 }
 
-.mb-2{
-  margin-bottom: 0.5rem;
+.mb-2\.5{
+  margin-bottom: 0.625rem;
 }
 
 .mb-5{
@@ -877,6 +877,10 @@ button,
 
 .mt-3{
   margin-top: 0.75rem;
+}
+
+.mt-3\.5{
+  margin-top: 0.875rem;
 }
 
 .mt-4{
@@ -961,6 +965,10 @@ button,
   height: 3rem;
 }
 
+.h-14{
+  height: 3.5rem;
+}
+
 .h-16{
   height: 4rem;
 }
@@ -1001,6 +1009,10 @@ button,
   height: 14rem;
 }
 
+.h-6{
+  height: 1.5rem;
+}
+
 .h-60{
   height: 15rem;
 }
@@ -1037,6 +1049,10 @@ button,
   max-height: 520px;
 }
 
+.min-h-\[24rem\]{
+  min-height: 24rem;
+}
+
 .min-h-\[calc\(100vh-1rem\)\]{
   min-height: calc(100vh - 1rem);
 }
@@ -1065,6 +1081,10 @@ button,
   width: 3rem;
 }
 
+.w-14{
+  width: 3.5rem;
+}
+
 .w-16{
   width: 4rem;
 }
@@ -1087,6 +1107,10 @@ button,
 
 .w-56{
   width: 14rem;
+}
+
+.w-6{
+  width: 1.5rem;
 }
 
 .w-60{
@@ -1151,6 +1175,10 @@ button,
 
 .max-w-none{
   max-width: none;
+}
+
+.max-w-sm{
+  max-width: 24rem;
 }
 
 .max-w-xl{
@@ -1260,6 +1288,10 @@ button,
 
 .justify-between{
   justify-content: space-between;
+}
+
+.gap-1{
+  gap: 0.25rem;
 }
 
 .gap-1\.5{
@@ -1517,6 +1549,14 @@ button,
 
 .bg-\[color-mix\(in_srgb\2c var\(--color-info-soft\)_88\%\2c white\)\]{
   background-color: color-mix(in srgb,var(--color-info-soft) 88%,white);
+}
+
+.bg-\[color-mix\(in_srgb\2c var\(--color-paper\)_90\%\2c white\)\]{
+  background-color: color-mix(in srgb,var(--color-paper) 90%,white);
+}
+
+.bg-\[color-mix\(in_srgb\2c var\(--color-paper\)_92\%\2c white\)\]{
+  background-color: color-mix(in srgb,var(--color-paper) 92%,white);
 }
 
 .bg-\[color-mix\(in_srgb\2c var\(--color-primary\)_10\%\2c white\)\]{
@@ -1820,8 +1860,16 @@ button,
   padding-bottom: 0.25rem;
 }
 
+.pb-2{
+  padding-bottom: 0.5rem;
+}
+
 .pb-4{
   padding-bottom: 1rem;
+}
+
+.pb-5{
+  padding-bottom: 1.25rem;
 }
 
 .pl-11{
@@ -2597,6 +2645,11 @@ button,
     padding-right: 0px;
   }
 
+  .sm\:px-1{
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
   .sm\:px-10{
     padding-left: 2.5rem;
     padding-right: 2.5rem;
@@ -2629,6 +2682,10 @@ button,
 
   .sm\:pb-0{
     padding-bottom: 0px;
+  }
+
+  .sm\:pb-1{
+    padding-bottom: 0.25rem;
   }
 
   .sm\:text-4xl{

@@ -112,15 +112,18 @@ function SidebarNavItem({ item, isCollapsed, onNavigate }) {
 
 function SidebarNav({ isCollapsed, onNavigate }) {
   return (
-    <nav className="flex flex-col gap-4">
+    <nav className="flex flex-col gap-5">
       {navigationGroups.map((group, index) => (
-        <div key={group.key} className={index > 0 ? 'border-t border-[var(--color-border)]/70 pt-4' : ''}>
+        <div
+          key={group.key}
+          className={index > 0 ? 'border-t border-[var(--color-border)]/70 pt-5' : ''}
+        >
           {!isCollapsed ? (
-            <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-soft)]/85">
+            <p className="mb-2.5 px-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-soft)]/85">
               {group.label}
             </p>
           ) : null}
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1">
             {group.items.map((item) => (
               <SidebarNavItem
                 key={item.to}
@@ -159,7 +162,7 @@ function SidebarBrand({ isCollapsed, onToggle }) {
     <button
       type="button"
       onClick={onToggle}
-      className="group flex w-full items-start justify-between rounded-2xl px-1 py-1 text-left transition duration-200 hover:bg-[color-mix(in_srgb,var(--color-bg-soft)_88%,white)]"
+      className="group flex w-full items-start justify-between rounded-2xl px-2 py-2 text-left transition duration-200 hover:bg-[color-mix(in_srgb,var(--color-bg-soft)_88%,white)]"
       aria-label="Collapse sidebar"
     >
       <div className="min-w-0">
@@ -182,7 +185,7 @@ function SidebarBoardSection({ isCollapsed, onNavigate }) {
 
   if (isCollapsed) {
     return (
-      <div className="flex w-full justify-center border-b border-[var(--color-border)]/70 pb-4">
+      <div className="flex w-full justify-center border-b border-[var(--color-border)]/70 pb-5">
         <button
           type="button"
           onClick={onNavigate}
@@ -201,7 +204,7 @@ function SidebarBoardSection({ isCollapsed, onNavigate }) {
   }
 
   return (
-    <section className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-surface-soft)] p-3">
+    <section className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-3 py-3.5">
       <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-soft)]/85">
         <FolderHeart className="h-3.5 w-3.5 text-[var(--color-primary)]" strokeWidth={1.9} />
         Board
@@ -243,7 +246,7 @@ function SidebarAccountSection({ isCollapsed, onLogout }) {
 
   if (isCollapsed) {
     return (
-      <div className="flex w-full justify-center border-t border-[var(--color-border)]/70 pt-4">
+      <div className="flex w-full justify-center border-t border-[var(--color-border)]/70 pt-5">
         <button
           type="button"
           onClick={onLogout}
@@ -260,7 +263,7 @@ function SidebarAccountSection({ isCollapsed, onLogout }) {
   }
 
   return (
-    <section className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-surface-soft)] p-3">
+    <section className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-3 py-3.5">
       <div className="flex items-start gap-3">
         <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[color-mix(in_srgb,var(--color-primary)_14%,white)] text-sm font-semibold text-[var(--color-primary)] shadow-sm">
           {getUserMarker(user)}
@@ -278,7 +281,7 @@ function SidebarAccountSection({ isCollapsed, onLogout }) {
         </div>
       </div>
 
-      <div className="mt-3">
+      <div className="mt-3.5">
         <button type="button" onClick={onLogout} className={`${ui.buttonSecondary} w-full px-3 py-2.5 text-xs`}>
           <LogOut className="mr-1.5 h-3.5 w-3.5" strokeWidth={1.9} />
           Sign out
@@ -302,7 +305,7 @@ function DesktopSidebar({ isCollapsed, setIsCollapsed, onMobileClose }) {
         <div
           className={[
             `${ui.panelStrong} flex flex-1 flex-col rounded-l-none border-l-0`,
-            isCollapsed ? 'items-center px-2 py-3' : 'px-3 py-4',
+            isCollapsed ? 'items-center px-2 py-4' : 'px-3 py-5',
           ].join(' ')}
         >
           <SidebarBrand
@@ -310,7 +313,12 @@ function DesktopSidebar({ isCollapsed, setIsCollapsed, onMobileClose }) {
             onToggle={() => setIsCollapsed((currentValue) => !currentValue)}
           />
 
-          <div className={['mt-4 flex flex-1 flex-col', isCollapsed ? 'w-full items-center gap-4' : 'gap-4'].join(' ')}>
+          <div
+            className={[
+              'mt-5 flex flex-1 flex-col',
+              isCollapsed ? 'w-full items-center gap-5' : 'gap-5',
+            ].join(' ')}
+          >
             <SidebarBoardSection isCollapsed={isCollapsed} onNavigate={onMobileClose} />
             <div className={isCollapsed ? 'w-full' : ''}>
               <SidebarNav isCollapsed={isCollapsed} />
@@ -365,7 +373,7 @@ function MobileSidebar({ isOpen, onClose }) {
           </button>
         </div>
 
-        <div className="mt-6 flex flex-1 flex-col gap-4 overflow-y-auto">
+        <div className="mt-6 flex flex-1 flex-col gap-5 overflow-y-auto">
           <SidebarBoardSection isCollapsed={false} onNavigate={onClose} />
           <SidebarNav isCollapsed={false} onNavigate={onClose} />
           <div className="mt-auto">
@@ -440,6 +448,12 @@ export function AppShell({ children }) {
           <div className={ui.pageContainer}>
             {children}
           </div>
+
+          <footer className="px-2 pb-2 pt-1 sm:px-1 sm:pb-1">
+            <p className="text-center text-xs text-[var(--color-text-soft)]">
+              Built by: Melissa Marcelo
+            </p>
+          </footer>
         </div>
       </div>
 

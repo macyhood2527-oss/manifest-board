@@ -49,7 +49,7 @@ export function BoardPage() {
   const [isBrowseCollapsed, setIsBrowseCollapsed] = useState(true)
   const [draggedManifestId, setDraggedManifestId] = useState('')
   const [newlyAddedManifestId, setNewlyAddedManifestId] = useState('')
-  const [isUsingPocketBase, setIsUsingPocketBase] = useState(false)
+  const [isUsingRemoteData, setIsUsingRemoteData] = useState(false)
   const { selectedBoard } = useBoards()
   const toast = useToast()
   const greeting = getBoardGreeting()
@@ -68,16 +68,16 @@ export function BoardPage() {
         }
 
         setManifests(records)
-        setIsUsingPocketBase(true)
-        setSourceLabel('Synced with PocketBase')
+        setIsUsingRemoteData(true)
+        setSourceLabel('Synced with Supabase')
       } catch {
         if (!isMounted) {
           return
         }
 
         setManifests(orderManifests(mockManifests))
-        setIsUsingPocketBase(false)
-        setSourceLabel('Showing starter manifests until PocketBase is configured')
+        setIsUsingRemoteData(false)
+        setSourceLabel('Showing starter manifests until Supabase is configured')
       } finally {
         if (isMounted) {
           setIsLoading(false)
@@ -148,7 +148,7 @@ export function BoardPage() {
     })
     setDraggedManifestId('')
 
-    if (!isUsingPocketBase) {
+    if (!isUsingRemoteData) {
       return
     }
 
