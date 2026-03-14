@@ -112,14 +112,14 @@ function SidebarNavItem({ item, isCollapsed, onNavigate }) {
 
 function SidebarNav({ isCollapsed, onNavigate }) {
   return (
-    <nav className="flex flex-col gap-5">
+    <nav className="flex flex-col gap-4">
       {navigationGroups.map((group, index) => (
         <div
           key={group.key}
-          className={index > 0 ? 'border-t border-[var(--color-border)]/70 pt-5' : ''}
+          className={index > 0 ? 'border-t border-[var(--color-border)]/70 pt-4' : ''}
         >
           {!isCollapsed ? (
-            <p className="mb-2.5 px-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-soft)]/85">
+            <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-soft)]/85">
               {group.label}
             </p>
           ) : null}
@@ -185,7 +185,7 @@ function SidebarBoardSection({ isCollapsed, onNavigate }) {
 
   if (isCollapsed) {
     return (
-      <div className="flex w-full justify-center border-b border-[var(--color-border)]/70 pb-5">
+      <div className="flex w-full justify-center border-b border-[var(--color-border)]/70 pb-4">
         <button
           type="button"
           onClick={onNavigate}
@@ -246,7 +246,7 @@ function SidebarAccountSection({ isCollapsed, onLogout }) {
 
   if (isCollapsed) {
     return (
-      <div className="flex w-full justify-center border-t border-[var(--color-border)]/70 pt-5">
+      <div className="flex w-full justify-center border-t border-[var(--color-border)]/70 pt-4">
         <button
           type="button"
           onClick={onLogout}
@@ -263,7 +263,7 @@ function SidebarAccountSection({ isCollapsed, onLogout }) {
   }
 
   return (
-    <section className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-3 py-3.5">
+    <section className="w-full overflow-hidden rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-3 py-3.5">
       <div className="flex items-start gap-3">
         <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[color-mix(in_srgb,var(--color-primary)_14%,white)] text-sm font-semibold text-[var(--color-primary)] shadow-sm">
           {getUserMarker(user)}
@@ -298,14 +298,14 @@ function DesktopSidebar({ isCollapsed, setIsCollapsed, onMobileClose }) {
     <aside
       className={[
         'fixed inset-y-0 left-0 z-30 hidden transition-[width] duration-300 lg:flex',
-        isCollapsed ? 'w-16' : 'w-[15rem]',
+        isCollapsed ? 'w-16' : 'w-[16.25rem]',
       ].join(' ')}
     >
       <div className="flex w-full py-2 pr-2">
         <div
           className={[
-            `${ui.panelStrong} flex flex-1 flex-col rounded-l-none border-l-0`,
-            isCollapsed ? 'items-center px-2 py-4' : 'px-3 py-5',
+            `${ui.panelStrong} flex min-h-0 flex-1 flex-col rounded-l-none border-l-0`,
+            isCollapsed ? 'items-center px-2 py-3.5' : 'px-3 py-4.5',
           ].join(' ')}
         >
           <SidebarBrand
@@ -315,15 +315,17 @@ function DesktopSidebar({ isCollapsed, setIsCollapsed, onMobileClose }) {
 
           <div
             className={[
-              'mt-5 flex flex-1 flex-col',
-              isCollapsed ? 'w-full items-center gap-5' : 'gap-5',
+              'mt-4 flex min-h-0 flex-1 flex-col',
+              isCollapsed ? 'w-full items-center gap-4' : 'gap-4',
             ].join(' ')}
           >
-            <SidebarBoardSection isCollapsed={isCollapsed} onNavigate={onMobileClose} />
-            <div className={isCollapsed ? 'w-full' : ''}>
-              <SidebarNav isCollapsed={isCollapsed} />
+            <div className={['flex min-h-0 flex-1 flex-col', isCollapsed ? 'w-full items-center overflow-y-auto' : 'overflow-y-auto pr-1'].join(' ')}>
+              <SidebarBoardSection isCollapsed={isCollapsed} onNavigate={onMobileClose} />
+              <div className={isCollapsed ? 'mt-4 w-full' : 'mt-4'}>
+                <SidebarNav isCollapsed={isCollapsed} />
+              </div>
             </div>
-            <div className="mt-auto w-full">
+            <div className="w-full border-t border-[var(--color-border)]/0 pt-1">
               <SidebarAccountSection
                 isCollapsed={isCollapsed}
                 onLogout={logout}
@@ -422,7 +424,7 @@ export function AppShell({ children }) {
       <div
         className={[
           'flex min-h-[calc(100vh-1rem)] w-full max-w-none transition-[padding] duration-300 sm:min-h-[calc(100vh-2rem)]',
-          isSidebarCollapsed ? 'lg:pl-[4.25rem]' : 'lg:pl-[15.4rem]',
+          isSidebarCollapsed ? 'lg:pl-[4.25rem]' : 'lg:pl-[16.65rem]',
         ].join(' ')}
       >
         <div className="flex min-w-0 flex-1 flex-col gap-4 sm:gap-5">
@@ -450,9 +452,14 @@ export function AppShell({ children }) {
           </div>
 
           <footer className="px-2 pb-2 pt-1 sm:px-1 sm:pb-1">
-            <p className="text-center text-xs text-[var(--color-text-soft)]">
-              Built by: Melissa Marcelo
-            </p>
+            <div className="rounded-[1.35rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_88%,white)] px-4 py-3 shadow-sm">
+              <p className="text-center text-xs font-medium tracking-[0.04em] text-[var(--color-text-soft)]">
+                Built by <span className="text-[var(--color-heading)]">Melissa Marcelo 🌿</span>
+              </p>
+              <p className="mt-1 text-center text-[11px] text-[var(--color-text-soft)]/85">
+                "Small steps still shape beautiful futures."
+              </p>
+            </div>
           </footer>
         </div>
       </div>
