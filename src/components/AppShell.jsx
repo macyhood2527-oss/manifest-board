@@ -446,7 +446,7 @@ export function AppShell({ children }) {
       <div
         className={[
           'flex min-h-[calc(100vh-1rem)] w-full max-w-none transition-[padding] duration-300 sm:min-h-[calc(100vh-2rem)]',
-          isSidebarCollapsed ? 'lg:pl-[4.25rem]' : 'lg:pl-[16.65rem]',
+          isSidebarCollapsed ? 'lg:pl-[4.75rem]' : 'lg:pl-[17.5rem]',
         ].join(' ')}
       >
         <div className="flex min-w-0 flex-1 flex-col gap-4 sm:gap-5">
