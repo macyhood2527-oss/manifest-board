@@ -16,6 +16,35 @@ import { ui } from '../lib/ui'
 import { useToast } from '../toast/useToast'
 
 const FILTER_OPTIONS = ['all', 'dreaming', 'planning', 'inspiration']
+const STATUS_SECTIONS = [
+  {
+    key: 'dreaming',
+    title: 'Dreaming',
+    description: 'Soft wishes, future visions, and the life scenes you want to keep close.',
+    accentClass: 'from-[color-mix(in_srgb,var(--color-primary)_18%,white)] to-transparent',
+    titleColor: 'color-mix(in srgb, var(--color-primary) 66%, var(--color-heading))',
+    subtitleColor: 'color-mix(in srgb, var(--color-primary) 34%, var(--color-text-soft))',
+    dividerColor: 'color-mix(in srgb, var(--color-primary) 34%, var(--color-border-strong))',
+  },
+  {
+    key: 'planning',
+    title: 'Planning',
+    description: 'Cards that already feel active, practical, and ready for your next steps.',
+    accentClass: 'from-[color-mix(in_srgb,var(--color-accent)_24%,white)] to-transparent',
+    titleColor: 'color-mix(in srgb, var(--color-accent) 60%, var(--color-heading))',
+    subtitleColor: 'color-mix(in srgb, var(--color-accent) 30%, var(--color-text-soft))',
+    dividerColor: 'color-mix(in srgb, var(--color-accent) 32%, var(--color-border-strong))',
+  },
+  {
+    key: 'inspiration',
+    title: 'Inspiration',
+    description: 'Mood pieces, references, and sparks you want around while the vision grows.',
+    accentClass: 'from-[color-mix(in_srgb,var(--color-heading)_10%,white)] to-transparent',
+    titleColor: 'color-mix(in srgb, var(--color-heading) 88%, var(--color-primary))',
+    subtitleColor: 'color-mix(in srgb, var(--color-heading) 36%, var(--color-text-soft))',
+    dividerColor: 'color-mix(in srgb, var(--color-heading) 20%, var(--color-border-strong))',
+  },
+]
 
 function getBoardGreeting() {
   const hour = new Date().getHours()
@@ -152,6 +181,12 @@ export function BoardPage() {
 
     return matchesStatus && matchesCategory && matchesSearch
   })
+  const groupedManifests = STATUS_SECTIONS
+    .map((section) => ({
+      ...section,
+      manifests: filteredManifests.filter((manifest) => manifest.status === section.key),
+    }))
+    .filter((section) => section.manifests.length > 0)
 
   function handleDragStart(manifestId) {
     setDraggedManifestId(manifestId)
@@ -445,22 +480,52 @@ export function BoardPage() {
           />
         ) : null}
 
-        {!isLoading && filteredManifests.length > 0 ? (
-          <section className={`${ui.sectionBoard} grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}>
-            {filteredManifests.map((manifest) => (
-              <ManifestCard
-                key={manifest.id}
-                manifest={manifest}
-                isNewlyAdded={newlyAddedManifestId === manifest.id}
-                draggable
-                isDragging={draggedManifestId === manifest.id}
-                onDragStart={() => handleDragStart(manifest.id)}
-                onDragOver={(event) => event.preventDefault()}
-                onDrop={() => handleDrop(manifest.id)}
-                onDragEnd={handleDragEnd}
-              />
+        {!isLoading && groupedManifests.length > 0 ? (
+          <div className="space-y-8">
+            {groupedManifests.map((section) => (
+              <section key={section.key} className={ui.sectionBoard}>
+                <div className="relative overflow-hidden pb-4">
+                  <div className={`pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b ${section.accentClass}`} />
+                  <div className="relative">
+                    <h2 className="font-serif text-2xl text-[var(--color-heading)]">
+                      <span style={{ color: section.titleColor }}>
+                        {section.title}
+                      </span>
+                    </h2>
+                    <p
+                      className="mt-1 max-w-2xl text-sm leading-6"
+                      style={{ color: section.subtitleColor }}
+                    >
+                      {section.description}
+                    </p>
+                    <div
+                      className="mt-4 h-px w-full"
+                      aria-hidden="true"
+                      style={{
+                        background: `linear-gradient(90deg, ${section.dividerColor}, color-mix(in srgb, ${section.dividerColor} 34%, transparent) 68%, transparent)`,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                  {section.manifests.map((manifest) => (
+                    <ManifestCard
+                      key={manifest.id}
+                      manifest={manifest}
+                      isNewlyAdded={newlyAddedManifestId === manifest.id}
+                      draggable
+                      isDragging={draggedManifestId === manifest.id}
+                      onDragStart={() => handleDragStart(manifest.id)}
+                      onDragOver={(event) => event.preventDefault()}
+                      onDrop={() => handleDrop(manifest.id)}
+                      onDragEnd={handleDragEnd}
+                    />
+                  ))}
+                </div>
+              </section>
             ))}
-          </section>
+          </div>
         ) : null}
       </div>
     </AppShell>

@@ -22,6 +22,7 @@ function getInitialFormValues(initialValues) {
     image: null,
     imageUrl: initialValues?.imageUrl ?? '',
     notes: initialValues?.notes ?? '',
+    achievedReflection: initialValues?.achievedReflection ?? '',
     category: initialValues?.category ?? '',
     status: initialValues?.status ?? 'dreaming',
     board: initialValues?.board ?? '',
@@ -410,6 +411,23 @@ export function ManifestForm({
           className={ui.fieldTextarea}
         />
       </label>
+
+      {formValues.status === 'achieved' ? (
+        <label className={`block space-y-2 ${ui.fieldLabel}`}>
+          <span>Reflection</span>
+          <textarea
+            name="achievedReflection"
+            rows="4"
+            value={formValues.achievedReflection}
+            onChange={handleChange}
+            placeholder="What changed, how did it happen, or what did this moment teach you?"
+            className={ui.fieldTextarea}
+          />
+          <p className="text-xs leading-5 text-[var(--color-text-soft)]">
+            Optional, but lovely for the keepsake wall later.
+          </p>
+        </label>
+      ) : null}
 
       <div className="-mx-4 sticky bottom-0 border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_92%,white)] px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 backdrop-blur-sm sm:static sm:mx-0 sm:bg-transparent sm:px-0 sm:pb-0">
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">

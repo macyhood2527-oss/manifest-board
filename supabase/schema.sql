@@ -19,6 +19,7 @@ create table if not exists public.manifests (
   board_id uuid references public.boards(id) on delete set null,
   title text not null,
   notes text default '',
+  achieved_reflection text default '',
   category text default '',
   status text not null check (status in ('dreaming', 'planning', 'inspiration', 'achieved')),
   image_path text,
@@ -28,11 +29,26 @@ create table if not exists public.manifests (
   updated_at timestamptz not null default now()
 );
 
+alter table public.manifests
+add column if not exists achieved_reflection text default '';
+
 create table if not exists public.ai_usage_events (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
   mode text not null check (mode in ('generate', 'rewrite')),
   created_at timestamptz not null default now()
+);
+
+create table if not exists public.quotes (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  quote_text text not null,
+  author text default '',
+  note text default '',
+  is_pinned boolean not null default false,
+  sort_order bigint default extract(epoch from now())::bigint,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create or replace function public.set_updated_at()
@@ -60,6 +76,7 @@ execute function public.set_updated_at();
 alter table public.boards enable row level security;
 alter table public.manifests enable row level security;
 alter table public.ai_usage_events enable row level security;
+alter table public.quotes enable row level security;
 
 drop policy if exists "Users can read their own boards" on public.boards;
 create policy "Users can read their own boards"
@@ -112,6 +129,27 @@ drop policy if exists "Users can create their own ai usage events" on public.ai_
 create policy "Users can create their own ai usage events"
 on public.ai_usage_events for insert
 with check (auth.uid() = user_id);
+
+drop policy if exists "Users can read their own quotes" on public.quotes;
+create policy "Users can read their own quotes"
+on public.quotes for select
+using (auth.uid() = user_id);
+
+drop policy if exists "Users can create their own quotes" on public.quotes;
+create policy "Users can create their own quotes"
+on public.quotes for insert
+with check (auth.uid() = user_id);
+
+drop policy if exists "Users can update their own quotes" on public.quotes;
+create policy "Users can update their own quotes"
+on public.quotes for update
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+
+drop policy if exists "Users can delete their own quotes" on public.quotes;
+create policy "Users can delete their own quotes"
+on public.quotes for delete
+using (auth.uid() = user_id);
 
 insert into storage.buckets (id, name, public)
 values

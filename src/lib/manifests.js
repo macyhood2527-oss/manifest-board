@@ -20,6 +20,7 @@ function mapManifest(record) {
     id: record.id,
     title: record.title,
     notes: record.notes ?? '',
+    achievedReflection: record.achieved_reflection ?? '',
     category: record.category ?? '',
     status: record.status,
     achievedAt: record.achieved_at ?? null,
@@ -42,6 +43,7 @@ async function buildManifestPayload(values, currentImagePath = '') {
   const payload = {
     title: values.title,
     notes: values.notes || '',
+    achieved_reflection: values.status === 'achieved' ? values.achievedReflection || '' : '',
     category: values.category || '',
     status: values.status,
     sort_order: Number(values.sortOrder ?? Date.now()),

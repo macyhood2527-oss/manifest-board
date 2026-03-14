@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import {
+  Quote,
   ChevronLeft,
   CircleCheckBig,
-  FolderHeart,
-  Heart,
   LayoutGrid,
   LogOut,
   Plus,
@@ -11,6 +10,7 @@ import {
   Smartphone,
 } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import topIcon from '../assets/top-icon.png'
 import { useBoards } from '../boards/useBoards'
 import { useInstallPrompt } from '../hooks/useInstallPrompt'
 import { useAuth } from '../context/useAuth'
@@ -25,6 +25,7 @@ const navigationGroups = [
     items: [
       { to: '/', label: 'Board', end: true, icon: LayoutGrid },
       { to: '/achieved', label: 'Achieved', icon: CircleCheckBig },
+      { to: '/quotes', label: 'Quotes', icon: Quote },
     ],
   },
   {
@@ -36,24 +37,6 @@ const navigationGroups = [
     ],
   },
 ]
-
-function getBoardMarker(board) {
-  if (board?.coverImageUrl) {
-    return (
-      <img
-        src={board.coverImageUrl}
-        alt=""
-        className="h-full w-full rounded-[inherit] object-cover"
-      />
-    )
-  }
-
-  if (board?.emoji) {
-    return board.emoji
-  }
-
-  return board?.name?.trim()?.charAt(0)?.toUpperCase() || 'M'
-}
 
 function getUserMarker(user) {
   if (user?.name?.trim()) {
@@ -151,7 +134,11 @@ function SidebarBrand({ isCollapsed, onToggle }) {
         aria-label="Expand sidebar"
       >
         <span className="transition duration-200 group-hover:-translate-x-2 group-hover:opacity-0">
-          <Heart className="h-[1.05rem] w-[1.05rem]" strokeWidth={2} />
+          <img
+            src={topIcon}
+            alt=""
+            className="h-[1.2rem] w-[1.2rem] object-contain"
+          />
         </span>
         <span className="absolute inset-0 flex items-center justify-center opacity-0 transition duration-200 group-hover:opacity-100">
           <ChevronLeft className="h-4 w-4 rotate-180" strokeWidth={2} />
@@ -182,63 +169,62 @@ function SidebarBrand({ isCollapsed, onToggle }) {
   )
 }
 
-function SidebarBoardSection({ isCollapsed, onNavigate }) {
-  const { boards, selectedBoardId, selectedBoard, selectBoard, isLoadingBoards } = useBoards()
+function SidebarBoardCover({ isCollapsed = false }) {
+  const { selectedBoard } = useBoards()
+
+  if (!selectedBoard) {
+    return null
+  }
 
   if (isCollapsed) {
     return (
-      <div className="flex w-full justify-center border-b border-[var(--color-border)]/70 pb-4">
-        <button
-          type="button"
-          onClick={onNavigate}
-          title={selectedBoard?.name || 'Current board'}
-          className="group relative inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-soft)] text-[var(--color-primary)] transition duration-200 hover:bg-[var(--color-surface-elevated)]"
-        >
-          <span className="inline-flex h-full w-full items-center justify-center overflow-hidden rounded-[inherit] text-base leading-none">
-            {getBoardMarker(selectedBoard)}
-          </span>
+      <div className="flex w-full justify-center">
+        <div className="group relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_88%,white)] shadow-sm">
+          {selectedBoard.coverImageUrl ? (
+            <img
+              src={selectedBoard.coverImageUrl}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,color-mix(in_srgb,var(--color-primary)_16%,white),color-mix(in_srgb,var(--color-accent)_14%,white))] text-base leading-none text-[var(--color-heading)]">
+              {selectedBoard.emoji || '✨'}
+            </div>
+          )}
+
           <span className="pointer-events-none absolute left-[calc(100%+0.75rem)] top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-3 py-1.5 text-xs font-medium text-[var(--color-heading)] shadow-paper group-hover:block">
-            {selectedBoard?.name || 'Current board'}
+            {selectedBoard.name || 'Current board'}
           </span>
-        </button>
+        </div>
       </div>
     )
   }
 
   return (
-    <section className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-3 py-3.5">
-      <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-soft)]/85">
-        <FolderHeart className="h-3.5 w-3.5 text-[var(--color-primary)]" strokeWidth={1.9} />
-        Board
-      </div>
-
-      <label className="mt-2 block">
-        <select
-          value={selectedBoardId}
-          onChange={(event) => {
-            selectBoard(event.target.value)
-            onNavigate?.()
-          }}
-          disabled={isLoadingBoards}
-          className={`${ui.fieldInput} py-3 pr-10`}
-        >
-          {boards.map((board) => (
-            <option key={board.id} value={board.id}>
-              {board.emoji ? `${board.emoji} ${board.name}` : board.name}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      {selectedBoard?.coverImageUrl ? (
-        <div className="mt-3 overflow-hidden rounded-[1.15rem] border border-[var(--color-border)] bg-[var(--color-paper-strong)]">
+    <section className="overflow-hidden rounded-[1.35rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface-soft)_88%,white)] shadow-sm">
+      <div className="relative aspect-[16/8]">
+        {selectedBoard.coverImageUrl ? (
           <img
             src={selectedBoard.coverImageUrl}
             alt=""
-            className="aspect-[16/8] w-full object-cover"
+            className="h-full w-full object-cover"
           />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,color-mix(in_srgb,var(--color-primary)_16%,white),color-mix(in_srgb,var(--color-accent)_14%,white))] text-4xl">
+            {selectedBoard.emoji || '✨'}
+          </div>
+        )}
+
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/20 via-transparent to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 px-3 py-3 text-[var(--color-primary-contrast)]">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/80">
+            Current board
+          </p>
+          <p className="mt-1 truncate text-sm font-medium">
+            {selectedBoard.name || 'Manifest Board'}
+          </p>
         </div>
-      ) : null}
+      </div>
     </section>
   )
 }
@@ -329,8 +315,8 @@ function DesktopSidebar({ isCollapsed, setIsCollapsed, onMobileClose }) {
             ].join(' ')}
           >
             <div className={['flex min-h-0 flex-1 flex-col', isCollapsed ? 'w-full items-center overflow-y-auto' : 'overflow-y-auto pr-1'].join(' ')}>
-              <SidebarBoardSection isCollapsed={isCollapsed} onNavigate={onMobileClose} />
-              <div className={isCollapsed ? 'mt-4 w-full' : 'mt-4'}>
+              <SidebarBoardCover isCollapsed={isCollapsed} />
+              <div className={isCollapsed ? 'w-full' : 'mt-4'}>
                 <SidebarNav isCollapsed={isCollapsed} />
               </div>
             </div>
@@ -388,7 +374,7 @@ function MobileSidebar({ isOpen, onClose }) {
         </div>
 
         <div className="mt-6 flex flex-1 flex-col gap-5 overflow-y-auto">
-          <SidebarBoardSection isCollapsed={false} onNavigate={onClose} />
+          <SidebarBoardCover />
           <SidebarNav isCollapsed={false} onNavigate={onClose} />
           <div className="mt-auto">
             <SidebarAccountSection
