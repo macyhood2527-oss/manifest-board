@@ -104,9 +104,9 @@ function QuoteForm({ values, onChange, onSubmit, onCancel, isSubmitting, submitL
 
 function QuoteCard({ quote, onEdit, onDelete, onTogglePin, isSubmittingId }) {
   return (
-    <article className="group relative overflow-visible px-1 pb-1 pt-5 transition duration-300 hover:-translate-y-1">
+    <article className="group relative overflow-visible px-1 pb-1 pt-4 transition duration-300 hover:-translate-y-1">
       <div
-        className="absolute left-1/2 top-0 z-20 h-5 w-[4.8rem] -translate-x-1/2 rounded-[0.22rem] border shadow-sm"
+        className="absolute left-1/2 top-1 z-20 h-5 w-[4.35rem] -translate-x-1/2 rounded-[0.22rem] border shadow-sm"
         aria-hidden="true"
         style={{
           backgroundColor: quote.isPinned
@@ -447,7 +447,6 @@ export function QuotesPage() {
         {!isLoading && pinnedQuotes.length > 0 ? (
           <section className={ui.sectionBoard}>
             <div className="relative overflow-hidden pb-4">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[color-mix(in_srgb,var(--color-primary)_14%,white)] to-transparent" />
               <div className="relative">
                 <h2
                   className="font-serif text-2xl"
@@ -486,7 +485,6 @@ export function QuotesPage() {
         {!isLoading && otherQuotes.length > 0 ? (
           <section className={ui.sectionBoard}>
             <div className="relative overflow-hidden pb-4">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[color-mix(in_srgb,var(--color-accent)_12%,white)] to-transparent" />
               <div className="relative">
                 <h2
                   className="font-serif text-2xl"

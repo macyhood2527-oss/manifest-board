@@ -843,6 +843,10 @@ button,
   top: 0px;
 }
 
+.top-1{
+  top: 0.25rem;
+}
+
 .top-1\/2{
   top: 50%;
 }
@@ -1282,10 +1286,6 @@ button,
 
 .w-\[4\.85rem\]{
   width: 4.85rem;
-}
-
-.w-\[4\.8rem\]{
-  width: 4.8rem;
 }
 
 .w-\[46\%\]{
@@ -2013,12 +2013,6 @@ button,
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
 }
 
-.from-\[color-mix\(in_srgb\2c var\(--color-accent\)_12\%\2c white\)\]{
-  --tw-gradient-from: color-mix(in srgb,var(--color-accent) 12%,white) var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
 .from-\[color-mix\(in_srgb\2c var\(--color-accent\)_14\%\2c white\)\]{
   --tw-gradient-from: color-mix(in srgb,var(--color-accent) 14%,white) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
@@ -2027,12 +2021,6 @@ button,
 
 .from-\[color-mix\(in_srgb\2c var\(--color-bg\)_64\%\2c transparent\)\]{
   --tw-gradient-from: color-mix(in srgb,var(--color-bg) 64%,transparent) var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
-.from-\[color-mix\(in_srgb\2c var\(--color-primary\)_14\%\2c white\)\]{
-  --tw-gradient-from: color-mix(in srgb,var(--color-primary) 14%,white) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
