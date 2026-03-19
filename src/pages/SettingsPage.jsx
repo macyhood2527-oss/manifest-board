@@ -3,6 +3,7 @@ import { ImagePlus, PencilLine, Trash2 } from 'lucide-react'
 import { useBoards } from '../boards/useBoards'
 import { AppShell } from '../components/AppShell'
 import { PageHeader } from '../components/PageHeader'
+import { PricingSection } from '../components/PricingSection'
 import { ThemeOption } from '../components/settings/ThemeOption'
 import { useAuth } from '../context/useAuth'
 import { useTheme } from '../context/useTheme'
@@ -646,6 +647,8 @@ export function SettingsPage() {
             </div>
           </div>
         </section>
+
+        <PricingSection />
       </div>
     </AppShell>
   )
